@@ -1,2 +1,5 @@
 .DS_Store
+db-config.json
 node_modules/
+sftp-config.json
+npm-debug.log
