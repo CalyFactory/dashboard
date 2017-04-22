@@ -40,6 +40,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -603,9 +604,9 @@
             </ul>
             <div class="tab-content no-padding">
               <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="daily-sync-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="weekly-sync-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="monthly-sync-chart" style="position: relative; height: 300px;"></div>
+              <div class="chart tab-pane active" id="daily-sync-chart" style="position: relative; height: 400px;"></div>
+              <div class="chart tab-pane" id="weekly-sync-chart" style="position: relative; height: 400px;"></div>
+              <div class="chart tab-pane" id="monthly-sync-chart" style="position: relative; height: 400px;"></div>
             </div>
           </div>
           <!-- /.nav-tabs-custom -->
@@ -640,46 +641,20 @@
               </div>-->
             </div>
             <div class="box-body chat" id="chat-box">
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
+              <% for(var i=0; i<userFeedback.length; i++) { %>
+                <!-- chat item -->
+                <div class="item">
+                  <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
 
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                    Mike Doe
-                  </a>
-                  분석하는거기다리는게  조금지쳐요 이앱이 궁금해서받은 사용자라면 금방삭제하면어쩌죠. ..?
-                </p>
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                    Alexander Pierce
-                  </a>
-                  이건개인취향이긴한데 추천목록ㅇㅣ 인스타느낌이여서 차라리 3*3으로 보여주면 더 보기에 편할것같다는 생각이듭니다
-                  왜냐면 한화면에 추천밥집이  한개만보여서 스크롤하는것이 번거로울수도 있겠다 생각이들기 때문입니다
-                </p>
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                    Susan Doe
-                  </a>
-                  너무 잘돼요!
-                </p>
-              </div>
-              <!-- /.item -->
+                  <p class="message">
+                    <a href="#" class="name">
+                      <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= userFeedback[i].created %></small>
+                      <%= userFeedback[i].user_id %>
+                    </a>
+                    <%= userFeedback[i].contents %>
+                  </p>
+                </div>
+              <% } %>
             </div>
           </div>
           <!-- /.box (chat box) -->
@@ -694,7 +669,7 @@
               <li class="pull-left header"><i class="fa fa-inbox"></i> 동기화 소요시간</li>
             </ul>
             <div class="tab-content no-padding">
-              <div id="sync-cost-chart" style="position: relative; height: 300px;"></div>
+              <div id="sync-cost-chart" style="position: relative; height: 400px;"></div>
               <!-- Morris chart - Sales -->
               <!--<div class="chart tab-pane active" id="daily-sync-chart" style="position: relative; height: 250px;"></div>
               <div class="chart tab-pane" id="weekly-sync-chart" style="position: relative; height: 250px;"></div>
@@ -732,69 +707,20 @@
               </div>-->
             </div>
             <div class="box-body chat" id="chat-box">
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
+              <% for(var i=0; i<outUserFeedback.length; i++) { %>
+                <!-- chat item -->
+                <div class="item">
+                  <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
 
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                    Mike Doe
-                  </a>
-                  분석하는거기다리는게  조금지쳐요 이앱이 궁금해서받은 사용자라면 금방삭제하면어쩌죠. ..?
-                </p>
-                <!--<div class="attachment">
-                  <h4>Attachments:</h4>
-
-                  <p class="filename">
-                    Theme-thumbnail-image.jpg
+                  <p class="message">
+                    <a href="#" class="name">
+                      <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= outUserFeedback[i].created %></small>
+                      <%= outUserFeedback[i].user_id %>
+                    </a>
+                    <%= outUserFeedback[i].contents %>
                   </p>
-
-                  <div class="pull-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                  </div>
-                </div>-->
-                <!-- /.attachment -->
-              </div>
-              <!-- /.item -->
-              <div class="item">
-                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                    Mike Doe
-                  </a>
-                  추천 데이터가 적절한지 잘 모르겠네요.
-                </p>
-              </div>
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                    Alexander Pierce
-                  </a>
-                  이건개인취향이긴한데 추천목록ㅇㅣ 인스타느낌이여서 차라리 3*3으로 보여주면 더 보기에 편할것같다는 생각이듭니다
-                  왜냐면 한화면에 추천밥집이  한개만보여서 스크롤하는것이 번거로울수도 있겠다 생각이들기 때문입니다
-                </p>
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                    Susan Doe
-                  </a>
-                  너무 잘돼요!
-                </p>
-              </div>
-              <!-- /.item -->
+                </div>
+              <% } %>
             </div>
             <!-- /.chat -->
             <!--<div class="box-footer">
@@ -1020,91 +946,6 @@
 </div>
 <!-- ./wrapper -->
 <script>
-  new Morris.Line({
-    element: 'daily-sync-chart',
-    resize: true,
-    hideHover: 'auto',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
-    data: [
-      { year: '2008', value: 20 },
-      { year: '2009', value: 10 },
-      { year: '2010', value: 5 },
-      { year: '2011', value: 5 },
-      { year: '2012', value: 20 }
-    ],
-    // The name of the data record attribute that contains x-values.
-    xkey: 'year',
-    // A list of names of data record attributes that contain y-values.
-    ykeys: ['value'],
-    // Labels for the ykeys -- will be displayed when you hover over the
-    // chart.
-    labels: ['Value']
-  });
-  new Morris.Line({
-    element: 'weekly-sync-chart',
-    resize: true,
-    hideHover: 'auto',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
-    data: [
-      { year: '2008', value: 60 },
-      { year: '2009', value: 30 },
-      { year: '2010', value: 20 },
-      { year: '2011', value: 70 },
-      { year: '2012', value: 40 }
-    ],
-    // The name of the data record attribute that contains x-values.
-    xkey: 'year',
-    // A list of names of data record attributes that contain y-values.
-    ykeys: ['value'],
-    // Labels for the ykeys -- will be displayed when you hover over the
-    // chart.
-    labels: ['Value']
-  });
-  new Morris.Line({
-    element: 'monthly-sync-chart',
-    resize: true,
-    hideHover: 'auto',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
-    data: [
-      { year: '2008', value: 40 },
-      { year: '2009', value: 20 },
-      { year: '2010', value: 10 },
-      { year: '2011', value: 10 },
-      { year: '2012', value: 40 }
-    ],
-    // The name of the data record attribute that contains x-values.
-    xkey: 'year',
-    // A list of names of data record attributes that contain y-values.
-    ykeys: ['value'],
-    // Labels for the ykeys -- will be displayed when you hover over the
-    // chart.
-    labels: ['Value']
-  });
-  //sync-cost-chart
-  new Morris.Line({
-    element: 'sync-cost-chart',
-    resize: true,
-    hideHover: 'auto',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
-    data: [
-      { time: '2008', google: 5, naver: 18, apple: 15 },
-      { time: '2009', google: 10, naver: 20, apple: 20 },
-      { time: '2010', google: 15, naver: 10, apple: 25 },
-      { time: '2011', google: 25, naver: 7, apple: 10 },
-      { time: '2012', google: 5, naver: 3, apple: 3 }
-    ],
-    // The name of the data record attribute that contains x-values.
-    xkey: 'time',
-    // A list of names of data record attributes that contain y-values.
-    ykeys: ['google','naver', 'apple'],
-    // Labels for the ykeys -- will be displayed when you hover over the
-    // chart.
-    labels: ['Google','Naver', 'Apple']
-  });
   new Morris.Donut({
     element: 'gender-chart',
     resize: true,
@@ -1131,6 +972,195 @@
       {label: "40대 이상", value: <%- age40count %>}
     ]
   });
+</script>
+<script>
+  DailyLine={
+    type: 'scatter',
+    x: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5],
+    y: [<%- timeTheDay[0] %>,<%- timeTheDay[1] %>,<%- timeTheDay[2] %>,<%- timeTheDay[3] %>,<%- timeTheDay[4] %>,<%- timeTheDay[5] %>,<%- timeTheDay[6] %>,<%- timeTheDay[7] %>,<%- timeTheDay[8] %>,<%- timeTheDay[9] %>,<%- timeTheDay[10] %>,<%- timeTheDay[11] %>,<%- timeTheDay[12] %>,<%- timeTheDay[13] %>,<%- timeTheDay[14] %>,<%- timeTheDay[15] %>,<%- timeTheDay[16] %>,<%- timeTheDay[17] %>,<%- timeTheDay[18] %>,<%- timeTheDay[19] %>,<%- timeTheDay[20] %>,<%- timeTheDay[21] %>,<%- timeTheDay[22] %>,<%- timeTheDay[23] %>,],
+    mode: 'lines',
+    name: 'Daily',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('daily-sync-chart', [DailyLine], {width:480,height:400});
+/*new Morris.Line({
+    element: 'daily-sync-chart',
+    resize: true,
+    hideHover: 'auto',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    data: [
+      { year: '2008', value: 20 },
+      { year: '2009', value: 10 },
+      { year: '2010', value: 5 },
+      { year: '2011', value: 5 },
+      { year: '2012', value: 20 }
+    ],
+    // The name of the data record attribute that contains x-values.
+    xkey: 'year',
+    // A list of names of data record attributes that contain y-values.
+    ykeys: ['value'],
+    // Labels for the ykeys -- will be displayed when you hover over the
+    // chart.
+    labels: ['Value']
+  });*/
+  WeeklyLine={
+    type: 'scatter',
+    x: ['7일 전', '6일 전', '5일 전', '4일 전', '3일 전', '2일 전', '하루 전'],
+    y: [<%- timeTheWeek[0] %>,<%- timeTheWeek[1] %>,<%- timeTheWeek[2] %>,<%- timeTheWeek[3] %>,<%- timeTheWeek[4] %>,<%- timeTheWeek[5] %>,<%- timeTheWeek[6] %>],
+    mode: 'lines',
+    name: 'Weekly',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('weekly-sync-chart', [WeeklyLine], {width:480,height:400});
+  /*new Morris.Line({
+    element: 'weekly-sync-chart',
+    resize: true,
+    hideHover: 'auto',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    data: [
+      { year: '2008', value: 60 },
+      { year: '2009', value: 30 },
+      { year: '2010', value: 20 },
+      { year: '2011', value: 70 },
+      { year: '2012', value: 40 }
+    ],
+    // The name of the data record attribute that contains x-values.
+    xkey: 'year',
+    // A list of names of data record attributes that contain y-values.
+    ykeys: ['value'],
+    // Labels for the ykeys -- will be displayed when you hover over the
+    // chart.
+    labels: ['Value']
+  });*/
+  MonthlyLine={
+    type: 'scatter',
+    x: ['4주 전', '3주 전', '2주 전', '1주 전'],
+    y: [<%- timeTheMonth[0] %>,<%- timeTheMonth[1] %>,<%- timeTheMonth[2] %>,<%- timeTheMonth[3] %>],
+    mode: 'lines',
+    name: 'Monthly',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('monthly-sync-chart', [MonthlyLine], {width:480,height:400});
+  /*new Morris.Line({
+    element: 'monthly-sync-chart',
+    resize: true,
+    hideHover: 'auto',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    data: [
+      { year: '2008', value: 40 },
+      { year: '2009', value: 20 },
+      { year: '2010', value: 10 },
+      { year: '2011', value: 10 },
+      { year: '2012', value: 40 }
+    ],
+    // The name of the data record attribute that contains x-values.
+    xkey: 'year',
+    // A list of names of data record attributes that contain y-values.
+    ykeys: ['value'],
+    // Labels for the ykeys -- will be displayed when you hover over the
+    // chart.
+    labels: ['Value']
+  });*/
+
+  //sync-cost-chart
+  googleLine={
+    type: 'scatter',
+    x: [0, 20, 40, 60],
+    y: [0,<%- googleSyncCost[0] %>, <%- googleSyncCost[1] %>, <%- googleSyncCost[2] %>],
+    mode: 'lines',
+    name: 'Google',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  naverLine={
+    type: 'scatter',
+    x: [0, 20, 40, 60],
+    y: [0,<%- naverSyncCost[0] %>, <%- naverSyncCost[1] %>, <%- naverSyncCost[2] %>],
+    mode: 'lines',
+    name: 'Naver',
+    line: {
+      color: 'rgb(55, 128, 191)',
+      width: 2
+    }
+  };
+  AppleLine={
+    type: 'scatter',
+    x: [0, 20, 40, 60],
+    y: [0,<%- appleSyncCost[0] %>, <%- appleSyncCost[1] %>, <%- appleSyncCost[2] %>],
+    mode: 'lines',
+    name: 'Apple',
+    line: {
+      color: 'rgb(0, 0, 0)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('sync-cost-chart', [googleLine,naverLine,AppleLine], {width:480,height:400});
+  /*new Morris.Line({
+    element: 'sync-cost-chart',
+    resize: true,
+    hideHover: 'auto',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    data: [
+      { time: '2008', google: 5, naver: 18, apple: 15 },
+      { time: '2009', google: 10, naver: 20, apple: 20 },
+      { time: '2010', google: 15, naver: 10, apple: 25 },
+      { time: '2011', google: 25, naver: 7, apple: 10 },
+      { time: '2012', google: 5, naver: 3, apple: 3 }
+    ],
+    // The name of the data record attribute that contains x-values.
+    xkey: 'time',
+    // A list of names of data record attributes that contain y-values.
+    ykeys: ['google','naver', 'apple'],
+    // Labels for the ykeys -- will be displayed when you hover over the
+    // chart.
+    labels: ['Google','Naver', 'Apple']
+    /*trace1 = {
+  type: 'scatter',
+  x: [1, 2, 3, 4],
+  y: [10, 15, 13, 17],
+  mode: 'lines',
+  name: 'Red',
+  line: {
+    color: 'rgb(219, 64, 82)',
+    width: 3
+  }
+};
+
+trace2 = {
+  type: 'scatter',
+  x: [1, 2, 3, 4],
+  y: [12, 9, 15, 12],
+  mode: 'lines',
+  name: 'Blue',
+  line: {
+    color: 'rgb(55, 128, 191)',
+    width: 1
+  }
+};
+
+var layout = {
+  width: 480,
+  height: 400
+};
+
+var data = [trace1, trace2];
+
+Plotly.newPlot('myDiv', data, layout);*/
 </script>
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>

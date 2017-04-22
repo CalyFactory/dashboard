@@ -33,6 +33,8 @@ module.exports = function(app)
 		var age30count	= 0;
 		var age40count	= 0;
 
+		var userFeedback = [];
+		var outUserFeedback = [];
 
 		var today = new Date();
 		var yesterday = new Date(new Date().setDate(new Date().getDate()-1));
@@ -56,7 +58,6 @@ module.exports = function(app)
 							if(err) throw err;
 
 					totalRegister = rows[0].total_user_count;
-					console.log(totalRegister);
 					callback(err, rows);
 				});
 			},
@@ -71,7 +72,6 @@ module.exports = function(app)
 					if(err) throw err;
 
 					yesterdayRegister = rows[0].yesterday_user_count;
-					console.log(yesterdayRegister);
 					callback(err, rows);
 				});
 			},
@@ -86,7 +86,6 @@ module.exports = function(app)
 					var reactTime = Math.floor(sum/rows.length);
 					reactTimeMin = Math.floor(reactTime/60);
 					reactTimeSec = reactTime%60;
-					console.log("react time : "+reactTimeMin+"m "+reactTimeSec+"s");
 					callback(err, rows);
 				});
 			},
@@ -103,10 +102,24 @@ module.exports = function(app)
 					`,(err, rows)=>{
 					//where UA.user_id != 'None'`,(err, rows)=>{
 					if(err) throw err;
-					/*
+
+
 					for(var i=0; i<rows.length; i++){
-						console.log(i+", "+rows[i].user_id+" : "+rows[i].contents+" /"+rows[i].created);
-					}*/
+						if(rows[i].type === 0){
+							userFeedback.push({
+								user_id : 	rows[i].user_id,
+								contents: 	rows[i].contents,
+								created : 	rows[i].created 	
+							});
+						}
+						else{
+							outUserFeedback.push({
+								user_id : 	rows[i].user_id,
+								contents: 	rows[i].contents,
+								created : 	rows[i].created 	
+							});
+						}
+					}
 					callback(err, rows);
 				});		
 			},
@@ -137,11 +150,6 @@ module.exports = function(app)
 						if(rows[i].user_birth > (year-49))
 							age40count++;
 					}
-
-					console.log("gender, male count : "+maleCount+", female count : "+femaleCount);
-					console.log("=====");
-					console.log("age");
-					console.log(" 10 : "+age10count+", 20 : "+age20count+", 30 : "+age30count+", 40 : "+age40count);
 					callback(err, rows);
 				});
 			},
@@ -307,7 +315,6 @@ module.exports = function(app)
 					 as previous4weeks
 				from USERACCOUNT;`,(err, rows)=>{
 					if(err) throw err;
-					console.log('====sync time====');
 					timeTheDay.push(rows[0].yesterday6clock);	timeTheDay.push(rows[0].yesterday7clock);
 					timeTheDay.push(rows[0].yesterday8clock);	timeTheDay.push(rows[0].yesterday9clock);
 					timeTheDay.push(rows[0].yesterday10clock);	timeTheDay.push(rows[0].yesterday11clock);
@@ -320,17 +327,14 @@ module.exports = function(app)
 					timeTheDay.push(rows[0].today0clock);	timeTheDay.push(rows[0].today1clock);
 					timeTheDay.push(rows[0].today2clock);	timeTheDay.push(rows[0].today3clock);
 					timeTheDay.push(rows[0].today4clock);	timeTheDay.push(rows[0].today5clock);
-					console.log(timeTheDay);
 
 					timeTheWeek.push(rows[0].previous7days);	timeTheWeek.push(rows[0].previous6days);
 					timeTheWeek.push(rows[0].previous5days);	timeTheWeek.push(rows[0].previous4days);
 					timeTheWeek.push(rows[0].previous3days);	timeTheWeek.push(rows[0].previous2days);
 					timeTheWeek.push(rows[0].yesterday);
-					console.log(timeTheWeek);
-
+					
 					timeTheMonth.push(rows[0].previous4weeks);	timeTheMonth.push(rows[0].previous3weeks);
 					timeTheMonth.push(rows[0].previous2weeks);	timeTheMonth.push(rows[0].previous1weeks);
-					console.log(timeTheMonth);
 					/*for(var i=0; i<24; i++)
 					{
 						connection.query(`select count(*) as day_count from USERACCOUNT 
@@ -345,153 +349,192 @@ module.exports = function(app)
 					console.log(timeTheDay);*/
 					callback(err, rows);
 				});
-		},
-		function(callback){
-			// Get sync cost time
-			connection.query(`(select
-					count(*) as sync_cost_20,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'google'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) >= 0
-					and (SE.ctime-UA.create_datetime) <= 20)
-				union
-				(select
-					count(*) as sync_cost_20,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'naver'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) >= 0
-					and (SE.ctime-UA.create_datetime) <= 20)
-				union
-				(select
-					count(*) as sync_cost_20,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'ical'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) >= 0
-					and (SE.ctime-UA.create_datetime) <= 20)`,(err, rows)=>{
-					if(err) throw err;
+			},
+			function(callback){
+				// Get sync cost time
+				connection.query(`(select
+						count(*) as sync_cost_20,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'google'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) >= 0
+						and (SE.ctime-UA.create_datetime) <= 20)
+					union
+					(select
+						count(*) as sync_cost_20,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'naver'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) >= 0
+						and (SE.ctime-UA.create_datetime) <= 20)
+					union
+					(select
+						count(*) as sync_cost_20,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'ical'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) >= 0
+						and (SE.ctime-UA.create_datetime) <= 20)`,(err, rows)=>{
+						if(err) throw err;
 
-					console.log('sync_cost_20');
-					for(var i=0; i<rows.length; i++){
-						if(rows[i].login_platform === null)
-							continue;
 						
-						syncCost20[rows[i].login_platform]=rows[i].sync_cost_20;
-					}
-					console.log(syncCost20);
-					callback(err, rows);
-			});
-		},
-		function(callback){
-			connection.query(`(select
-					count(*) as sync_cost_40,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'google'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) > 20
-					and (SE.ctime-UA.create_datetime) <= 40)
-				union
-				(select
-					count(*) as sync_cost_40,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'naver'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) > 20
-					and (SE.ctime-UA.create_datetime) <= 40)
-				union
-				(select
-					count(*) as sync_cost_40,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'ical'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) > 20
-					and (SE.ctime-UA.create_datetime) <= 40)`,(err, rows)=>{
-					if(err) throw err;
+						for(var i=0; i<rows.length; i++){
+							if(rows[i].login_platform === null)
+								continue;
+							
+							syncCost20[rows[i].login_platform]=rows[i].sync_cost_20;
+						}
+						
+						callback(err, rows);
+				});
+			},
+			function(callback){
+				connection.query(`(select
+						count(*) as sync_cost_40,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'google'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) > 20
+						and (SE.ctime-UA.create_datetime) <= 40)
+					union
+					(select
+						count(*) as sync_cost_40,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'naver'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) > 20
+						and (SE.ctime-UA.create_datetime) <= 40)
+					union
+					(select
+						count(*) as sync_cost_40,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'ical'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) > 20
+						and (SE.ctime-UA.create_datetime) <= 40)`,(err, rows)=>{
+						if(err) throw err;
 
-					console.log('sync_cost_40');
-					for(var i=0; i<rows.length; i++){
-						if(rows[i].login_platform === null)
-							continue;
-						
-						syncCost40[rows[i].login_platform]=rows[i].sync_cost_40;
-					}
-					console.log(syncCost40);
-					callback(err, rows);
-			});
-		},
-		function(callback){
-			connection.query(`(select
-					count(*) as sync_cost_60,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'google'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) > 40)
-				union
-				(select
-					count(*) as sync_cost_60,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'naver'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) > 40)
-				union
-				(select
-					count(*) as sync_cost_60,
-					UA.login_platform
-				from USERACCOUNT as UA
-				inner join SYNC_END as SE
-					on UA.account_hashkey = SE.account_hashkey
-				where
-					UA.login_platform = 'ical'
-					and SE.sync_time_state = 1
-					and	(SE.ctime-UA.create_datetime) > 40)`,(err, rows)=>{
-					if(err) throw err;
+						for(var i=0; i<rows.length; i++){
+							if(rows[i].login_platform === null)
+								continue;
+							
+							syncCost40[rows[i].login_platform]=rows[i].sync_cost_40;
+						}
+						callback(err, rows);
+				});
+			},
+			function(callback){
+				connection.query(`(select
+						count(*) as sync_cost_60,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'google'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) > 40)
+					union
+					(select
+						count(*) as sync_cost_60,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'naver'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) > 40)
+					union
+					(select
+						count(*) as sync_cost_60,
+						UA.login_platform
+					from USERACCOUNT as UA
+					inner join SYNC_END as SE
+						on UA.account_hashkey = SE.account_hashkey
+					where
+						UA.login_platform = 'ical'
+						and SE.sync_time_state = 1
+						and	(SE.ctime-UA.create_datetime) > 40)`,(err, rows)=>{
+						if(err) throw err;
 
-					console.log('sync_cost_60');
-					for(var i=0; i<rows.length; i++){
-						if(rows[i].login_platform === null)
-							continue;
-						
-						syncCost60[rows[i].login_platform]=rows[i].sync_cost_60;
-					}
-					console.log(syncCost60);
-					callback(err, rows);
-			});
+						for(var i=0; i<rows.length; i++){
+							if(rows[i].login_platform === null)
+								continue;
+							
+							syncCost60[rows[i].login_platform]=rows[i].sync_cost_60;
+						}
+						callback(err, rows);
+				});
 		}], function(err, res){
 			if(err) return parallel_done(err);
+
+			var googleSyncCost=[];
+			var naverSyncCost=[];
+			var appleSyncCost=[];
+
+			if(syncCost20['naver'] !== undefined)
+				naverSyncCost.push(syncCost20['naver']);
+			else
+				naverSyncCost.push(0);
+			if(syncCost40['naver'] !== undefined)
+				naverSyncCost.push(syncCost40['naver']);
+			else
+				naverSyncCost.push(0);
+			if(syncCost60['naver'] !== undefined)
+				naverSyncCost.push(syncCost60['naver']);
+			else
+				naverSyncCost.push(0);
+
+			if(syncCost20['google'] !== undefined)
+				googleSyncCost.push(syncCost20['google']);
+			else
+				googleSyncCost.push(0);
+			if(syncCost40['google'] !== undefined)
+				googleSyncCost.push(syncCost40['google']);
+			else
+				googleSyncCost.push(0);
+			if(syncCost60['google'] !== undefined)
+				googleSyncCost.push(syncCost60['google']);
+			else
+				googleSyncCost.push(0);
+
+			if(syncCost20['ical'] !== undefined)
+				appleSyncCost.push(syncCost20['ical']);
+			else
+				appleSyncCost.push(0);
+			if(syncCost40['ical'] !== undefined)
+				appleSyncCost.push(syncCost40['ical']);
+			else
+				appleSyncCost.push(0);
+			if(syncCost60['ical'] !== undefined)
+				appleSyncCost.push(syncCost60['ical']);
+			else
+				appleSyncCost.push(0);
 
 			result.render('index.html',{
 				totalRegister : totalRegister,
@@ -503,7 +546,15 @@ module.exports = function(app)
 				age10count : age10count,
 				age20count : age20count,
 				age30count : age30count,
-				age40count : age40count
+				age40count : age40count,
+				naverSyncCost : naverSyncCost,
+				googleSyncCost : googleSyncCost,
+				appleSyncCost : appleSyncCost,
+				timeTheDay : timeTheDay,
+				timeTheWeek : timeTheWeek,
+				timeTheMonth : timeTheMonth,
+				userFeedback : userFeedback,
+				outUserFeedback : outUserFeedback
 			});
 		});	
 	});
