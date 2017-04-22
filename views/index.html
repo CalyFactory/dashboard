@@ -527,7 +527,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3><%= total_register %></h3>
+              <h3><%= totalRegister %></h3>
 
               <p>총 가입자 수</p>
             </div>
@@ -542,7 +542,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><%= yesterday_register %></h3>
+              <h3><%= yesterdayRegister %></h3>
 
               <p>어제 가입자 수</p>
             </div>
@@ -1113,8 +1113,8 @@
     // the chart.
     colors: ["#3c8dbc", "#f56954"],
     data: [
-      {label: "남", value: <%- male %>},
-      {label: "여", value: <%- female %>}
+      {label: "남", value: <%- maleCount %>},
+      {label: "여", value: <%- femaleCount %>}
     ]
   });
   new Morris.Donut({
@@ -1125,10 +1125,10 @@
     // the chart.
     colors: ["#3c8dbc", "#f56954", "#00a65a","#000000"],
     data: [
-      {label: "10대", value: <%- age_10 %>},
-      {label: "20대", value: <%- age_20 %>},
-      {label: "30대", value: <%- age_30 %>},
-      {label: "40대 이상", value: <%- age_40 %>}
+      {label: "10대", value: <%- age10 %>},
+      {label: "20대", value: <%- age20 %>},
+      {label: "30대", value: <%- age30 %>},
+      {label: "40대 이상", value: <%- age40 %>}
     ]
   });
 </script>
