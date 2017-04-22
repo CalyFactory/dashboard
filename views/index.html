@@ -558,7 +558,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>1<sup style="font-size: 20px">min</sup> 44<sup style="font-size: 20px">sec</sup></h3>
+              <h3><%= reactTimeMin %><sup style="font-size: 20px">min</sup> <%= reactTimeSec %><sup style="font-size: 20px">sec</sup></h3>
 
               <p style="font-size: 16px">평균매핑 대응시간</p>
             </div>
@@ -1125,10 +1125,10 @@
     // the chart.
     colors: ["#3c8dbc", "#f56954", "#00a65a","#000000"],
     data: [
-      {label: "10대", value: <%- age10 %>},
-      {label: "20대", value: <%- age20 %>},
-      {label: "30대", value: <%- age30 %>},
-      {label: "40대 이상", value: <%- age40 %>}
+      {label: "10대", value: <%- age10count %>},
+      {label: "20대", value: <%- age20count %>},
+      {label: "30대", value: <%- age30count %>},
+      {label: "40대 이상", value: <%- age40count %>}
     ]
   });
 </script>
