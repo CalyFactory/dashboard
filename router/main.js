@@ -5,13 +5,6 @@ var connection = mysql.createConnection(dbconfig);
 
 module.exports = function(app)
 {
-	/*app.get('/',function(req,res){
-		connection.query('select admin_id,admin_name from ADMINACCOUNT',(err, rows)=>{
-			if(err) throw err;
-
-			res.send(rows);
-		});
-	});*/
 	app.get('/',(req,result)=>{
 		var totalRegister 		= 0;
 		var yesterdayRegister 	= 0;
@@ -35,6 +28,12 @@ module.exports = function(app)
 
 		var userFeedback = [];
 		var outUserFeedback = [];
+
+		var southReco 	 = {};
+		var northReco 	 = {};
+		var centeralReco = {};
+		var eastReco	 = {};
+		var westReco	 = {};
 
 		var today = new Date();
 		var yesterday = new Date(new Date().setDate(new Date().getDate()-1));
@@ -167,6 +166,26 @@ module.exports = function(app)
 				group by R.main_region, R.region
 				`,(err, rows)=>{
 					if(err) throw err;
+					for(var i=0; i<rows.length; i++){
+						if(rows[i].main_region === "남부"){
+							southReco[rows[i].region]=rows[i].detail_region_count;
+						}
+						else if(rows[i].main_region === "북부"){
+							northReco[rows[i].region]=rows[i].detail_region_count;	
+						}
+						else if(rows[i].main_region === "중부"){
+							centeralReco[rows[i].region]=rows[i].detail_region_count;
+						}
+						else if(rows[i].main_region === "동부"){
+							eastReco[rows[i].region]=rows[i].detail_region_count;
+						}
+						else if(rows[i].main_region === "서부"){
+							westReco[rows[i].region]=rows[i].detail_region_count;
+						}
+						else;
+						//console.log(rows[i].main_region+":"+rows[i].region+" "+rows[i].detail_region_count);
+					}
+
 					callback(err, rows);
 				});
 			},
@@ -554,7 +573,12 @@ module.exports = function(app)
 				timeTheWeek : timeTheWeek,
 				timeTheMonth : timeTheMonth,
 				userFeedback : userFeedback,
-				outUserFeedback : outUserFeedback
+				outUserFeedback : outUserFeedback,
+				southReco : southReco,
+				northReco : northReco,
+				centeralReco : centeralReco,
+				eastReco : eastReco,
+				westReco : westReco
 			});
 		});	
 	});
