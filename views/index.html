@@ -40,6 +40,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -527,7 +528,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>10</h3>
+              <h3><%= totalRegister %></h3>
 
               <p>총 가입자 수</p>
             </div>
@@ -542,7 +543,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>2</h3>
+              <h3><%= yesterdayRegister %></h3>
 
               <p>어제 가입자 수</p>
             </div>
@@ -558,7 +559,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>1<sup style="font-size: 20px">min</sup> 44<sup style="font-size: 20px">sec</sup></h3>
+              <h3><%= reactTimeMin %><sup style="font-size: 20px">min</sup> <%= reactTimeSec %><sup style="font-size: 20px">sec</sup></h3>
 
               <p style="font-size: 16px">평균매핑 대응시간</p>
             </div>
@@ -586,6 +587,205 @@
         </div>
         <!-- ./col -->
       </div>
+      <div class="nav-tabs-custom" style="width:100%;">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-right">
+              <li class="pull-left header"><i class="fa fa-inbox"></i> 추천데이터 수집현황</li>
+            </ul>
+            <div class="tab-content no-padding">
+              <div id="none" style="position: relative; height: auto;">
+                <table class="table table-bordered">
+                  <tr>
+                    <th rowspan=11 style="text-align:center;color:white;background-color:black;">남부</th>
+                    <td>가로수길</td>
+                    <td><%= southReco.가로수길 %></td>
+
+                    <th rowspan=11 style="text-align:center;color:white;background-color:black;">북부</th>
+                    <td>광화문</td>
+                    <td><%= northReco.광화문 %></td>
+                    
+                    <th rowspan=11 style="text-align:center;color:white;background-color:black;">중부</th>
+                    <td>경리단길</td>
+                    <td><%= centeralReco.경리단길 %></td>
+                    
+                    <th rowspan=11 style="text-align:center;color:white;background-color:black;">동부</th>
+                    <td>건대</td>
+                    <td><%= eastReco.건대 %></td>
+                    
+                    <th rowspan=11 style="text-align:center;color:white;background-color:black;">서부</th>
+                    <td>망원</td>
+                    <td><%= westReco.망원 %></td>
+                  </tr>
+                  <tr>
+                    <td>강남언덕길</td>
+                    <td><%= southReco.강남언덕길 %></td>
+
+                    <td>대학로</td>
+                    <td><%= northReco.대학로 %></td>
+
+                    <td>독서당길</td>
+                    <td><%= centeralReco.독서당길 %></td>
+
+                    <td>왕십리</td>
+                    <td><%= eastReco.왕십리 %></td>
+
+                    <td>상수</td>
+                    <td><%= westReco.상수 %></td>
+                  </tr>
+                  <tr>
+                    <td>강남역</td>
+                    <td><%= southReco.강남역 %></td>
+
+                    <td>명동</td>
+                    <td><%= northReco.명동 %></td>
+
+                    <td>보석길</td>
+                    <td><%= centeralReco.보석길 %></td>
+
+                    <td></td>
+                    <td></td>
+                    
+
+                    <td>신촌</td>
+                    <td><%= westReco.신촌 %></td>
+                  </tr>
+                  <tr>
+                    <td>논현</td>
+                    <td><%= southReco.논현 %></td>
+
+                    <td>부암동</td>
+                    <td><%= northReco.부암동 %></td>
+
+                    <td>여의도</td>
+                    <td><%= centeralReco.여의도 %></td>
+
+                    <td></td>
+                    <td></td>
+                    
+
+                    <td>연남동</td>
+                    <td><%= westReco.연남동 %></td>
+                  </tr>
+                  <tr>
+                    <td>도산대로</td>
+                    <td><%= southReco.도산대로 %></td>
+
+                    <td>북촌</td>
+                    <td><%= northReco.북촌 %></td>
+
+                    <td>우사단로</td>
+                    <td><%= centeralReco.우사단로 %></td>
+
+                    <td></td>
+                    <td></td>
+                    
+
+                    <td>연희동</td>
+                    <td><%= westReco.연희동 %></td>
+                  </tr>
+                  <tr>
+                    <td>사당</td>
+                    <td><%= southReco.사당 %></td>
+
+                    <td>삼청동</td>
+                    <td><%= northReco.삼청동 %></td>
+
+                    <td>이촌</td>
+                    <td><%= centeralReco.이촌 %></td>
+
+                    <td></td>
+                    <td></td>
+                    
+
+                    <td>이대앞</td>
+                    <td><%= westReco.이대앞 %></td>
+                  </tr>
+                  <tr>
+                    <td>삼성역</td>
+                    <td><%= southReco.삼성역 %></td>
+
+                    <td>서촌</td>
+                    <td><%= northReco.서촌 %></td>
+
+                    <td>이태원</td>
+                    <td><%= centeralReco.이태원 %></td>
+
+                    <td></td>
+                    <td></td>
+                    
+
+                    <td>합정</td>
+                    <td><%= westReco.합정 %></td>
+                  </tr>
+                  <tr>
+                    <td>압구정로데오</td>
+                    <td><%= southReco.압구정로데오 %></td>
+
+                    <td>성북동</td>
+                    <td><%= northReco.성북동 %></td>
+
+                    <td>한강진</td>
+                    <td><%= centeralReco.한강진 %></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>홍대</td>
+                    <td><%= westReco.홍대 %></td>
+                  </tr>
+                  <tr>
+                    <td>역삼역</td>
+                    <td><%= southReco.역삼역 %></td>
+
+                    <td>시청</td>
+                    <td><%= northReco.시청 %></td>
+
+                    <td>한남동</td>
+                    <td><%= centeralReco.한남동 %></td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>이수</td>
+                    <td><%= southReco.이수 %></td>
+
+                    <td>인사동</td>
+                    <td><%= northReco.인사동 %></td>
+
+                    <td>해방촌</td>
+                    <td><%= centeralReco.해방촌 %></td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    
+                  </tr>
+                  <tr>
+                    <td>청담</td>
+                    <td><%= southReco.청담 %></td>
+
+                    <td>종로</td>
+                    <td><%= northReco.종로 %></td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    
+                  </tr>
+                  
+              </table>
+
+              </div>
+              
+
+            </div>
+          </div>
       <!-- /.row -->
       <!-- Main row -->
       <div class="row">
@@ -603,9 +803,9 @@
             </ul>
             <div class="tab-content no-padding">
               <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="daily-sync-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="weekly-sync-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="monthly-sync-chart" style="position: relative; height: 300px;"></div>
+              <div class="chart tab-pane active" id="daily-sync-chart" style="position: relative; height: 400px;"></div>
+              <div class="chart tab-pane" id="weekly-sync-chart" style="position: relative; height: 400px;"></div>
+              <div class="chart tab-pane" id="monthly-sync-chart" style="position: relative; height: 400px;"></div>
             </div>
           </div>
           <!-- /.nav-tabs-custom -->
@@ -640,46 +840,20 @@
               </div>-->
             </div>
             <div class="box-body chat" id="chat-box">
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
+              <% for(var i=0; i<userFeedback.length; i++) { %>
+                <!-- chat item -->
+                <div class="item">
+                  <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
 
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                    Mike Doe
-                  </a>
-                  분석하는거기다리는게  조금지쳐요 이앱이 궁금해서받은 사용자라면 금방삭제하면어쩌죠. ..?
-                </p>
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                    Alexander Pierce
-                  </a>
-                  이건개인취향이긴한데 추천목록ㅇㅣ 인스타느낌이여서 차라리 3*3으로 보여주면 더 보기에 편할것같다는 생각이듭니다
-                  왜냐면 한화면에 추천밥집이  한개만보여서 스크롤하는것이 번거로울수도 있겠다 생각이들기 때문입니다
-                </p>
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                    Susan Doe
-                  </a>
-                  너무 잘돼요!
-                </p>
-              </div>
-              <!-- /.item -->
+                  <p class="message">
+                    <a href="#" class="name">
+                      <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= userFeedback[i].created %></small>
+                      <%= userFeedback[i].user_id %>
+                    </a>
+                    <%= userFeedback[i].contents %>
+                  </p>
+                </div>
+              <% } %>
             </div>
           </div>
           <!-- /.box (chat box) -->
@@ -694,7 +868,7 @@
               <li class="pull-left header"><i class="fa fa-inbox"></i> 동기화 소요시간</li>
             </ul>
             <div class="tab-content no-padding">
-              <div id="sync-cost-chart" style="position: relative; height: 300px;"></div>
+              <div id="sync-cost-chart" style="position: relative; height: 400px;"></div>
               <!-- Morris chart - Sales -->
               <!--<div class="chart tab-pane active" id="daily-sync-chart" style="position: relative; height: 250px;"></div>
               <div class="chart tab-pane" id="weekly-sync-chart" style="position: relative; height: 250px;"></div>
@@ -732,69 +906,20 @@
               </div>-->
             </div>
             <div class="box-body chat" id="chat-box">
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
+              <% for(var i=0; i<outUserFeedback.length; i++) { %>
+                <!-- chat item -->
+                <div class="item">
+                  <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
 
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                    Mike Doe
-                  </a>
-                  분석하는거기다리는게  조금지쳐요 이앱이 궁금해서받은 사용자라면 금방삭제하면어쩌죠. ..?
-                </p>
-                <!--<div class="attachment">
-                  <h4>Attachments:</h4>
-
-                  <p class="filename">
-                    Theme-thumbnail-image.jpg
+                  <p class="message">
+                    <a href="#" class="name">
+                      <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= outUserFeedback[i].created %></small>
+                      <%= outUserFeedback[i].user_id %>
+                    </a>
+                    <%= outUserFeedback[i].contents %>
                   </p>
-
-                  <div class="pull-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                  </div>
-                </div>-->
-                <!-- /.attachment -->
-              </div>
-              <!-- /.item -->
-              <div class="item">
-                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                    Mike Doe
-                  </a>
-                  추천 데이터가 적절한지 잘 모르겠네요.
-                </p>
-              </div>
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                    Alexander Pierce
-                  </a>
-                  이건개인취향이긴한데 추천목록ㅇㅣ 인스타느낌이여서 차라리 3*3으로 보여주면 더 보기에 편할것같다는 생각이듭니다
-                  왜냐면 한화면에 추천밥집이  한개만보여서 스크롤하는것이 번거로울수도 있겠다 생각이들기 때문입니다
-                </p>
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                    Susan Doe
-                  </a>
-                  너무 잘돼요!
-                </p>
-              </div>
-              <!-- /.item -->
+                </div>
+              <% } %>
             </div>
             <!-- /.chat -->
             <!--<div class="box-footer">
@@ -1020,7 +1145,47 @@
 </div>
 <!-- ./wrapper -->
 <script>
-  new Morris.Line({
+  new Morris.Donut({
+    element: 'gender-chart',
+    resize: true,
+    hideHover: 'auto',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    colors: ["#3c8dbc", "#f56954"],
+    data: [
+      {label: "남", value: <%- maleCount %>},
+      {label: "여", value: <%- femaleCount %>}
+    ]
+  });
+  new Morris.Donut({
+    element: 'age-chart',
+    resize: true,
+    hideHover: 'auto',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    colors: ["#3c8dbc", "#f56954", "#00a65a","#000000"],
+    data: [
+      {label: "10대", value: <%- age10count %>},
+      {label: "20대", value: <%- age20count %>},
+      {label: "30대", value: <%- age30count %>},
+      {label: "40대 이상", value: <%- age40count %>}
+    ]
+  });
+</script>
+<script>
+  DailyLine={
+    type: 'scatter',
+    x: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5],
+    y: [<%- timeTheDay[0] %>,<%- timeTheDay[1] %>,<%- timeTheDay[2] %>,<%- timeTheDay[3] %>,<%- timeTheDay[4] %>,<%- timeTheDay[5] %>,<%- timeTheDay[6] %>,<%- timeTheDay[7] %>,<%- timeTheDay[8] %>,<%- timeTheDay[9] %>,<%- timeTheDay[10] %>,<%- timeTheDay[11] %>,<%- timeTheDay[12] %>,<%- timeTheDay[13] %>,<%- timeTheDay[14] %>,<%- timeTheDay[15] %>,<%- timeTheDay[16] %>,<%- timeTheDay[17] %>,<%- timeTheDay[18] %>,<%- timeTheDay[19] %>,<%- timeTheDay[20] %>,<%- timeTheDay[21] %>,<%- timeTheDay[22] %>,<%- timeTheDay[23] %>,],
+    mode: 'lines',
+    name: 'Daily',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('daily-sync-chart', [DailyLine], {width:480,height:400});
+/*new Morris.Line({
     element: 'daily-sync-chart',
     resize: true,
     hideHover: 'auto',
@@ -1040,8 +1205,20 @@
     // Labels for the ykeys -- will be displayed when you hover over the
     // chart.
     labels: ['Value']
-  });
-  new Morris.Line({
+  });*/
+  WeeklyLine={
+    type: 'scatter',
+    x: ['7일 전', '6일 전', '5일 전', '4일 전', '3일 전', '2일 전', '하루 전'],
+    y: [<%- timeTheWeek[0] %>,<%- timeTheWeek[1] %>,<%- timeTheWeek[2] %>,<%- timeTheWeek[3] %>,<%- timeTheWeek[4] %>,<%- timeTheWeek[5] %>,<%- timeTheWeek[6] %>],
+    mode: 'lines',
+    name: 'Weekly',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('weekly-sync-chart', [WeeklyLine], {width:480,height:400});
+  /*new Morris.Line({
     element: 'weekly-sync-chart',
     resize: true,
     hideHover: 'auto',
@@ -1061,8 +1238,20 @@
     // Labels for the ykeys -- will be displayed when you hover over the
     // chart.
     labels: ['Value']
-  });
-  new Morris.Line({
+  });*/
+  MonthlyLine={
+    type: 'scatter',
+    x: ['4주 전', '3주 전', '2주 전', '1주 전'],
+    y: [<%- timeTheMonth[0] %>,<%- timeTheMonth[1] %>,<%- timeTheMonth[2] %>,<%- timeTheMonth[3] %>],
+    mode: 'lines',
+    name: 'Monthly',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('monthly-sync-chart', [MonthlyLine], {width:480,height:400});
+  /*new Morris.Line({
     element: 'monthly-sync-chart',
     resize: true,
     hideHover: 'auto',
@@ -1082,9 +1271,44 @@
     // Labels for the ykeys -- will be displayed when you hover over the
     // chart.
     labels: ['Value']
-  });
+  });*/
+
   //sync-cost-chart
-  new Morris.Line({
+  googleLine={
+    type: 'scatter',
+    x: [0, 20, 40, 60],
+    y: [0,<%- googleSyncCost[0] %>, <%- googleSyncCost[1] %>, <%- googleSyncCost[2] %>],
+    mode: 'lines',
+    name: 'Google',
+    line: {
+      color: 'rgb(219, 64, 82)',
+      width: 2
+    }
+  };
+  naverLine={
+    type: 'scatter',
+    x: [0, 20, 40, 60],
+    y: [0,<%- naverSyncCost[0] %>, <%- naverSyncCost[1] %>, <%- naverSyncCost[2] %>],
+    mode: 'lines',
+    name: 'Naver',
+    line: {
+      color: 'rgb(55, 128, 191)',
+      width: 2
+    }
+  };
+  AppleLine={
+    type: 'scatter',
+    x: [0, 20, 40, 60],
+    y: [0,<%- appleSyncCost[0] %>, <%- appleSyncCost[1] %>, <%- appleSyncCost[2] %>],
+    mode: 'lines',
+    name: 'Apple',
+    line: {
+      color: 'rgb(0, 0, 0)',
+      width: 2
+    }
+  };
+  Plotly.newPlot('sync-cost-chart', [googleLine,naverLine,AppleLine], {width:480,height:400});
+  /*new Morris.Line({
     element: 'sync-cost-chart',
     resize: true,
     hideHover: 'auto',
@@ -1104,33 +1328,38 @@
     // Labels for the ykeys -- will be displayed when you hover over the
     // chart.
     labels: ['Google','Naver', 'Apple']
-  });
-  new Morris.Donut({
-    element: 'gender-chart',
-    resize: true,
-    hideHover: 'auto',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
-    colors: ["#3c8dbc", "#f56954"],
-    data: [
-      {label: "남", value: 25},
-      {label: "여", value: 30}
-    ]
-  });
-  new Morris.Donut({
-    element: 'age-chart',
-    resize: true,
-    hideHover: 'auto',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
-    colors: ["#3c8dbc", "#f56954", "#00a65a","#000000"],
-    data: [
-      {label: "10대", value: 15},
-      {label: "20대", value: 30},
-      {label: "30대", value: 30},
-      {label: "40대 이상", value: 10}
-    ]
-  });
+    /*trace1 = {
+  type: 'scatter',
+  x: [1, 2, 3, 4],
+  y: [10, 15, 13, 17],
+  mode: 'lines',
+  name: 'Red',
+  line: {
+    color: 'rgb(219, 64, 82)',
+    width: 3
+  }
+};
+
+trace2 = {
+  type: 'scatter',
+  x: [1, 2, 3, 4],
+  y: [12, 9, 15, 12],
+  mode: 'lines',
+  name: 'Blue',
+  line: {
+    color: 'rgb(55, 128, 191)',
+    width: 1
+  }
+};
+
+var layout = {
+  width: 480,
+  height: 400
+};
+
+var data = [trace1, trace2];
+
+Plotly.newPlot('myDiv', data, layout);*/
 </script>
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>

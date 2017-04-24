@@ -1,9 +1,15 @@
 {
-  "name": "express-tutorial",
+  "name": "express-dashboard",
   "version": "1.0.0",
-  "dependencies": 
-  {
+  "scripts": {
+    "start": "forever start -l forever.log -o forever-out.log -e forever-err.log server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "async": "^2.3.0",
+    "body-parser": "^1.17.1",
+    "ejs": "~2.4.1",
     "express": "~4.13.1",
-    "ejs": "~2.4.1"    
+    "mysql": "^2.11.1"
   }
 }
