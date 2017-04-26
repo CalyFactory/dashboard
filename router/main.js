@@ -5,7 +5,11 @@ var connection = mysql.createConnection(dbconfig);
 
 module.exports = function(app)
 {
-	app.get('/',(req,result)=>{
+	app.get('/dashboard',(req,result)=>{
+		sess = req.session;
+		if(!sess.name)
+			result.redirect('/');
+
 		var totalRegister 		= 0;
 		var yesterdayRegister 	= 0;
 		var reactTimeMin 		= 0;
@@ -578,9 +582,45 @@ module.exports = function(app)
 				northReco : northReco,
 				centeralReco : centeralReco,
 				eastReco : eastReco,
-				westReco : westReco
+				westReco : westReco,
+				admin_name : sess.name
 			});
 		});	
+	});
+
+	app.get('/',(req,res)=>{
+		if(sess.name)
+			res.redirect('/dashboard');
+		else
+			res.render('./pages/examples/login.html',{error:null});
+	});
+	app.post('/login',(req,res)=>{
+		sess = req.session;
+
+		connection.query('select admin_name from ADMINACCOUNT where admin_id=\''+req.body.adminId+'\' and admin_pw=\''+req.body.password+'\'',(err,rows)=>{
+			if(rows.length>0){
+				sess.name = rows[0].admin_name;
+				res.redirect('/dashboard');
+			}
+			else{
+				res.render('./pages/examples/login.html',{error: "Input wrong id or password"});
+			}
+		});
+	});
+	app.get('/logout',(req,res)=>{
+		sess = req.session;
+
+		if(sess.name){
+			req.session.destroy((err)=>{
+				if(err){
+					console.log(err);
+				}else{
+					res.redirect('/');
+				}
+			})
+		}else{
+			res.redirect('/');
+		}
 	});
 	app.get('/pages/charts/chartjs.html',function(req,res){
 		res.render('pages/charts/chartjs.html');

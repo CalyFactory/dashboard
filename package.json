@@ -10,6 +10,7 @@
     "body-parser": "^1.17.1",
     "ejs": "~2.4.1",
     "express": "~4.13.1",
+    "express-session": "^1.15.2",
     "mysql": "^2.11.1"
   }
 }
