@@ -589,6 +589,8 @@ module.exports = function(app)
 	});
 
 	app.get('/',(req,res)=>{
+		sess = req.session;
+
 		if(sess.name)
 			res.redirect('/dashboard');
 		else
@@ -606,6 +608,54 @@ module.exports = function(app)
 				res.render('./pages/examples/login.html',{error: "Input wrong id or password"});
 			}
 		});
+	});
+
+	// PUSH example in web-mapping-admin
+	app.post('/push',(req,res)=>{
+/* 
+	// PUSH ALL-DEVICE ABOUT EACH ACCOUNT-USER
+
+	connection.query(
+		`select 
+			UD.push_token
+		from USERDEVICE as UD
+		inner join USERACCOUNT as UA
+			on UD.account_hashkey = UA.account_hashkey
+		where
+			UA.account_hashkey = \'`+req.body.account_hashkey+'\''
+		, (err, pushtokens) => {
+			
+			let pushtoken_length=pushtokens.length;
+			for(let i=0; i<pushtoken_length; i++)
+			{
+				let pushtoken_data={
+					'to':pushtokens[i].push_token,
+					'data':{
+						"type":"reco",
+						"action":""
+					}
+				};
+
+				request({
+					method	: 'POST',
+					uri 	: 'https://fcm.googleapis.com/fcm/send',
+					headers	:
+					{
+						'Content-Type':'application/json',
+						'Authorization':'key='+keyconfig.key
+					},
+					body 	: pushtoken_data,
+					json 	: true
+				}).then((data) => {
+				}).catch((err) => {
+					console.log(err);
+					throw err;
+
+					console.log("Complete push to device");
+				})
+			}
+	});
+*/
 	});
 	app.get('/logout',(req,res)=>{
 		sess = req.session;
