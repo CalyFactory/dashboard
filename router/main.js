@@ -591,9 +591,65 @@ module.exports = function(app)
 	app.get('/analysis',(req,res)=>{
 		sess = req.session;
 
-		res.render('./pages/tables/simple.html',{
-			admin_name : sess.name
-		});
+		var mainRegionCountsDict={};
+		var mainRegionCounts=[];
+		var noneRecommendList=[];
+		async.parallel([
+			function(callback){
+				connection.query(
+					`select
+						U.user_gender,
+						U.user_birth,
+						E.summary,
+						E.start_dt,
+						E.end_dt,
+						E.location
+					from EVENT as E
+					inner join CALENDAR as C
+						on E.calendar_hashkey = C.calendar_hashkey
+					inner join USERACCOUNT as UA
+						on C.account_hashkey = UA.account_hashkey
+					inner join USER as U
+						on UA.user_hashkey = U.user_hashkey
+					where
+						E.reco_state = 2`,(err,rows)=>{
+					if(err) throw err;
+					
+					noneRecommendList=rows;
+
+					callback(err, rows);
+				});				
+			},
+			function(callback){
+				connection.query(
+					`select
+						R.main_region,
+						(select sum(RECO.reco_cnt) from RECOMMENDATION as RECO where RECO.main_region = R.main_region) as main_region_recommends
+					from RECOMMENDATION as R
+					where
+						R.main_region != 'NULL'
+						or R.main_region != 'None'
+					group by R.main_region, main_region_recommends`,(err, rows)=>{
+					if(err) throw err;
+					var totalMainRegionCounts=0;
+					for(var i=0; i<rows.length; i++)
+						totalMainRegionCounts += rows[i].main_region_recommends;
+
+					for(var i=0; i<rows.length; i++){
+						mainRegionCountsDict[rows[i].main_region]=[rows[i].main_region_recommends, Math.floor(rows[i].main_region_recommends/totalMainRegionCounts*100)];
+					}
+
+					callback(err, rows);
+				});
+				
+		}], function(err, ressult){
+			res.render('./pages/tables/simple.html',{
+				admin_name 			 : sess.name,
+				mainRegionCounts : mainRegionCountsDict,
+				noneRecommendList 	 : noneRecommendList
+			});
+		}); // end async.parallel
+
 	});
 
 	app.get('/',(req,res)=>{
