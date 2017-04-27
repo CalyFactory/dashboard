@@ -588,6 +588,14 @@ module.exports = function(app)
 		});	
 	});
 
+	app.get('/analysis',(req,res)=>{
+		sess = req.session;
+
+		res.render('./pages/tables/simple.html',{
+			admin_name : sess.name
+		});
+	});
+
 	app.get('/',(req,res)=>{
 		sess = req.session;
 
