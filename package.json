@@ -2,7 +2,8 @@
   "name": "express-dashboard",
   "version": "1.0.0",
   "scripts": {
-    "start": "forever start -l forever.log -o forever-out.log -e forever-err.log server.js",
+    "start": "forever start -l dash-forever.log -o dash-forever-out.log -e dash-forever-err.log server.js",
+    "restart": "sudo rm -r /home/refgjin/.forever/dash-forever.log && forever start -l dash-forever.log -o dash-forever-out.log -e dash-forever-err.log server.js",
     "dev": "node server.js"
   },
   "dependencies": {
@@ -10,6 +11,8 @@
     "body-parser": "^1.17.1",
     "ejs": "~2.4.1",
     "express": "~4.13.1",
+    "express-session": "^1.15.2",
+    "forever": "^0.15.3",
     "mysql": "^2.11.1"
   }
 }
