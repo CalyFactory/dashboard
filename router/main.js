@@ -3,6 +3,10 @@ var async = require('async');
 var dbconfig = require(__dirname+'/../config/db-config.json');
 var connection = mysql.createConnection(dbconfig);
 
+
+var pushCtrl = require(__dirname+'/../controller/pushCtrl.js');
+
+
 module.exports = function(app)
 {
 	app.get('/dashboard',(req,result)=>{
@@ -675,4 +679,8 @@ module.exports = function(app)
 	app.get('/pages/charts/chartjs.html',function(req,res){
 		res.render('pages/charts/chartjs.html');
     });
+    
+    app.route('/push').get(pushCtrl.initData)
+    app.route('/v1.0/push/send').post(pushCtrl.sendPush)
+
 }
