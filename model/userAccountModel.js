@@ -10,7 +10,7 @@ var connection = mysql.createConnection(dbconfig);
 exports.getPushUsers  = () => {
     return new Promise((resolve, reject) => {              
         connection.query(
-          `SELECT user_id,account_hashkey,date_format(create_datetime, '%b %d %Y %h:%i %p') as create_datetime,is_active 
+          `SELECT user_id,account_hashkey,date_format(create_datetime, '%b %d %Y %h:%i %p') as create_datetime,login_platform,is_active 
           FROM USERACCOUNT
           WHERE is_active is not null`
           ,(err, rows) => {

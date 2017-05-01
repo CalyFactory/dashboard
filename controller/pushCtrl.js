@@ -35,19 +35,18 @@ exports.initData = async (req, res, next) => {
 exports.sendPush = async (req, res, next) => {
 	
 	console.log('[pushCtrl]sendPush')
-	const userIds = req.body.userIds;
+	const users = req.body.users;
 	const pushText = req.body.pushText;
+	//login platform 확인해야함.
 	
-	console.log(userIds)
+	console.log(users)
 	console.log(pushText)
 	pushText.replace(/[\r\n]/g, '');
 
 
 	try{
 		let result = '';
-
-
-		rows = await userDeviceModel.getPushToken(JSON.parse(userIds));			
+		rows = await userDeviceModel.getPushToken(JSON.parse(users));			
 		console.log(rows)
 		arrPush = new Array()
 		for (var i = 0; i<rows.length;i++){

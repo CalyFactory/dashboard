@@ -679,7 +679,7 @@ module.exports = function(app)
 	app.get('/pages/charts/chartjs.html',function(req,res){
 		res.render('pages/charts/chartjs.html');
     });
-    
+    //dev.caly.io:555566/push 
     app.route('/push').get(pushCtrl.initData)
     app.route('/v1.0/push/send').post(pushCtrl.sendPush)
 

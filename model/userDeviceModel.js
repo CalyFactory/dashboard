@@ -7,26 +7,27 @@ var connection = mysql.createConnection(dbconfig);
  * Post retrieve
  * @param team_idx
  */
-exports.getPushToken  = (userIds) => {
-    return new Promise((resolve, reject) => {              
-          var additionalUsers = ''
-          for (i = 0; i < userIds.length; i++) { 
-              additionalUsers += 'USERACCOUNT.user_id = "'+ userIds[i] + '" or '              
-          }
-          additionalUsers = additionalUsers.substring(0, additionalUsers.length - 3);
-
+exports.getPushToken  = (users) => {
+    return new Promise((resolve, reject) => {            
+        console.log('users' ,users)  
+        var additionalUsers = ''
+        for (i = 0; i < users.length; i++) { 
+            additionalUsers += 'USERACCOUNT.user_id = "'+ users[i]['userId'] + '" AND ' + ' USERACCOUNT.login_platform =  "' + users[i]['loginPlatform'] +'" OR '           
+        }
+        additionalUsers = additionalUsers.substring(0, additionalUsers.length - 3);
+        console.log(additionalUsers)
         connection.query(
-          `SELECT push_token FROM USERDEVICE
-          INNER JOIN USERACCOUNT
-          ON USERACCOUNT.account_hashkey = USERDEVICE.account_hashkey
-          WHERE USERACCOUNT.is_active IS NOT NULL 
-          AND `+ additionalUsers
-          , (err, rows) => {
-          if (err) {
+            `SELECT push_token FROM USERDEVICE
+            INNER JOIN USERACCOUNT
+            ON USERACCOUNT.account_hashkey = USERDEVICE.account_hashkey
+            WHERE USERACCOUNT.is_active IS NOT NULL 
+            AND `+ additionalUsers
+        , (err, rows) => {
+            if (err) {
             reject(err);
-          } else {
+            } else {
             resolve(rows);
-          }
+            }
         });
     });  
 }

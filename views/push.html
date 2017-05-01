@@ -158,6 +158,7 @@
                 <tr>      
                   <th>check</th>
                   <th>user_id</th>
+                  <th>login_platform</th>
                   <th>account_hashkey</th>
                   <th>create_datetime</th>
                   <th>is_active</th>
@@ -169,6 +170,7 @@
                 <tr>
                   <td><input type="checkbox"/></td>                
                   <td><%=el.user_id %></td>
+                  <td><%=el.login_platform %></td>
                   <td><%=el.account_hashkey %></td>
                   <td><%=el.create_datetime %></td>
                   <td><%=el.is_active %></td>
@@ -448,33 +450,44 @@
 <script>
         const API_SENDPUSH_URL = "http://dev.caly.io:9091/v1.0/push/send"
 
-        var userIds = new Array()
+        var users = []
         $(':checkbox').change(function() {
             console.log('checkbox')
             var row = this.parentNode.parentNode;
             var cols = row.getElementsByTagName("td");
             var userId = cols[1].childNodes[0].nodeValue
-            console.log('checked' +cols[1].childNodes[0].nodeValue)
-           
+            var loginPlatform = cols[2].childNodes[0].nodeValue
+
+            // console.log('checked user => ' +cols[1].childNodes[0].nodeValue)
+            // console.log('checked loginPlatform => ' +cols[2].childNodes[0].nodeValue)
+            var userDic = {}
             if (this.checked){
-                userIds.push(userId)
+
+                userDic['userId'] = userId
+                userDic['loginPlatform'] = loginPlatform
+                users.push(userDic)
             }else{
-                console.log('nope')
-                var index = $.inArray(userId, userIds);
-                if (index != -1) {
-                    userIds.splice(index, 1);
+                for(var i=0; i<users.length; i++){
+                  //검색해보니까 같은애가 있다 그럼 해당 array 제거
+                  if (users[i]['userId'] == userId && users[i]['loginPlatform'] == loginPlatform ){
+                    //해당 인덱스 는 i 이다.
+                      var index = i
+                      if (index != -1) {
+                          users.splice(index, 1);
+                      }                     
+                  }
                 }
             }    
-            console.log(userIds)          
+            console.log(users)          
         }); 
 
         $( "#btnPush" ).click(function() {
-          if (userIds.length !=0){
-              var stringUserId  = '';
-              for (i = 0; i < userIds.length; i++) { 
-                  stringUserId += userIds[i] + "\n"
+          if (users.length !=0){
+              var stringUsers  = '';
+              for (i = 0; i < users.length; i++) { 
+                  stringUsers += users[i]['userId']+" ("+users[i]['loginPlatform'] + ")\n"
               }
-              var answer = confirm ("아래유저들에게 푸시를 보냅니다. \n"+stringUserId)
+              var answer = confirm ("아래유저들에게 푸시를 보냅니다. \n"+stringUsers)
               if (answer){
                   console.log('yes');
                   pushText = $("#pushText").val()
@@ -482,13 +495,13 @@
                   pushText = pushText.replace('}','');
 
 
-                  $.post( API_SENDPUSH_URL, { userIds: JSON.stringify(userIds),pushText: pushText })
+                  $.post( API_SENDPUSH_URL, { users: JSON.stringify(users),pushText: pushText })
                   .done(function( data ) {
                     confirm('응답:' + JSON.stringify(data) )
                     $('input[type=checkbox]').removeAttr('checked');
 
                   });
-                  userIds = [];
+                  users = [];
                   //서버로 전송
               }
               else{
