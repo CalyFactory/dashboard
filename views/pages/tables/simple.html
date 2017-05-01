@@ -17,7 +17,10 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
-
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -135,7 +138,7 @@
                     <td><%= noneRecommendList[i].user_birth %></td>
                     <td><%= noneRecommendList[i].summary %></td>
                     <td><%= noneRecommendList[i].location %></td>
-                    <td><%= noneRecommendList[i].start_dt %> ~ <%= noneRecommendList[i].end_dt %></td>
+                    <td><%= noneRecommendList[i].converted_start_dt %> ~ <%= noneRecommendList[i].converted_end_dt %></td>
                   </tr>
                 <% } %>
               </table>
@@ -148,74 +151,70 @@
         <!-- RIGHT SIDE -->
         <div class="col-md-6">
           <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">대분류 추천비율</h3>
+              </div>
+              <div class="box-body no-padding">
+                <div class="chart tab-pane" id="region-chart" style="position: relative; height: 400px;"></div>
+              </div>  
+          </div>
+          <div class="box">
             <div class="box-header">
-              <h3 class="box-title">대분류 지역별 추천비율</h3>
+              <h3 class="box-title">세부지역별 추천비율</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
               <table class="table table-condensed">
                 <tr>
                   <th style="width: 10%">번호</th>
-                  <th style="width: 20%">대분류 지역</th>
-                  <th style="width: 40%">추천 그래프</th>
+                  <th style="width: 10%">대분류</th>
+                  <th style="width: 20%">세부지역</th>
+                  <th style="width: 30%">추천 그래프</th>
                   <th style="width: 15%">추천률</th>
                   <th style="width: 15%">추천 수</th>
                 </tr>
-                <tr>
-                  <td>1.</td>
-                  <td>남부</td>
-                  <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: <%- mainRegionCounts.남부[1] %>%"></div>
+                <% 
+                  var length = Object.keys(detailRegionDict).length;
+                  for( var i=0; i<length ; i++){ %>
+                  <tr>
+                    <td><%= i+1 %></td>
+                    <td><%= detailRegionDict[i]['main_region'] %></td>
+                    <td><%= detailRegionDict[i]['region'] %></td>
+                    <td>
+                      <div class="progress progress-xs">
+
+                      <% if(detailRegionDict[i]['main_region'] == '남부') { %>
+                      <div class="progress-bar progress-bar-danger" style="width: <%- detailRegionDict[i]['detail_percent'] %>%"></div>
+                      <% } else if(detailRegionDict[i]['main_region'] == '북부') { %>
+                      <div class="progress-bar progress-bar-yellow" style="width: <%- detailRegionDict[i]['detail_percent'] %>%"></div>
+                      <% } else if(detailRegionDict[i]['main_region'] == '중부') { %>
+                      <div class="progress-bar progress-bar-striped" style="width: <%- detailRegionDict[i]['detail_percent'] %>%"></div>
+                      <% } else if(detailRegionDict[i]['main_region'] == '동부') { %>
+                      <div class="progress-bar progress-bar-primary" style="width: <%- detailRegionDict[i]['detail_percent'] %>%"></div>
+                      <% } else { %>                      
+                      <div class="progress-bar progress-bar-success" style="width: <%- detailRegionDict[i]['detail_percent'] %>%"></div>
+
+                      <% } %>
                     </div>
-                  </td>
-                  <td><span class="badge bg-red"><%= mainRegionCounts.남부[1] %>%</span></td>
-                  <td><%= mainRegionCounts.남부[0] %></td>
-                </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>북부</td>
-                  <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: <%- mainRegionCounts.북부[1] %>%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-yellow"><%= mainRegionCounts.북부[1] %>%</span></td>
-                  <td><%= mainRegionCounts.북부[0] %></td>
-                </tr>
-                <tr>
-                  <td>3.</td>
-                  <td>중부</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped">
-                      <div class="progress-bar progress-bar-aqua" style="width: <%- mainRegionCounts.중부[1] %>%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-aqua"><%= mainRegionCounts.중부[1] %>%</span></td>
-                  <td><%= mainRegionCounts.중부[0] %></td>
-                </tr>
-                <tr>
-                  <td>4.</td>
-                  <td>동부</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-primary" style="width: <%- mainRegionCounts.동부[1] %>%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-light-blue"><%= mainRegionCounts.동부[1] %>%</span></td>
-                  <td><%= mainRegionCounts.동부[0] %></td>
-                </tr>
-                <tr>
-                  <td>5.</td>
-                  <td>서부</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-success" style="width: <%- mainRegionCounts.서부[1] %>%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-green"><%= mainRegionCounts.서부[1] %>%</span></td>
-                  <td><%= mainRegionCounts.서부[0] %></td>
-                </tr>
+                    </td>
+                    <td>
+
+                    <% if(detailRegionDict[i]['main_region'] == '남부') { %>
+                      <span class="badge bg-red">
+                    <% } else if(detailRegionDict[i]['main_region'] == '북부') { %>
+                      <span class="badge bg-yellow">
+                    <% } else if(detailRegionDict[i]['main_region'] == '중부') { %>
+                      <span class="badge bg-aqua">
+                    <% } else if(detailRegionDict[i]['main_region'] == '동부') { %>
+                      <span class="badge bg-light-blue">
+                    <% } else { %>                      
+                      <span class="badge bg-green">
+                    <% } %>
+                    <%= detailRegionDict[i]['detail_percent'] %>%</span></td>
+                    <td><%= detailRegionDict[i]['detail_count'] %></td>
+                  </tr>
+                <% } %>
+
               </table>
             </div>
             <!-- /.box-body -->
@@ -432,7 +431,17 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
+<script>
+new Morris.Donut({
+    element: 'region-chart',
+    resize: true,
+    hideHover: 'auto',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    colors: ["#3c8dbc", "#f56954", "#00a65a","#000000"],
+    data: <%- mainRegionDict %>
+  });
+</script>
 <!-- jQuery 2.2.3 -->
 <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->

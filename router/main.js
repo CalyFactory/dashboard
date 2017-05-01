@@ -591,8 +591,8 @@ module.exports = function(app)
 	app.get('/analysis',(req,res)=>{
 		sess = req.session;
 
-		var mainRegionCountsDict={};
-		var mainRegionCounts=[];
+		var mainRegionDict={};
+		var detailRegionDict={};
 		var noneRecommendList=[];
 		async.parallel([
 			function(callback){
@@ -616,36 +616,71 @@ module.exports = function(app)
 					if(err) throw err;
 					
 					noneRecommendList=rows;
-
-					callback(err, rows);
+					var length = rows.length;
+					//console.log(new Date(rows[i].start_dt).format(""))
+					for(var i=0; i<length; i++){
+						sDate = new Date(rows[i].start_dt);
+						noneRecommendList.converted_start_dt = sDate.getFullYear()+'/'+(sDate.getMonth()+1)+'/'+sDate.getDate()+' '+sDate.getHours()+':'+sDate.getMinutes()+':'+sDate.getSeconds();
+						//console.log(sDate.getFullYear()+'/'+(sDate.getMonth()+1)+'/'+sDate.getDate()+' '+sDate.getHours()+':'+sDate.getMinutes()+':'+sDate.getSeconds());
+						//console.log(noneRecommendList.converted_start_dt);
+						eDate = new Date(rows[i].end_dt);
+						noneRecommendList.converted_end_dt = eDate.getFullYear()+'/'+(eDate.getMonth()+1)+'/'+eDate.getDate()+' '+eDate.getHours()+':'+eDate.getMinutes()+':'+eDate.getSeconds();
+					}
+					callback(err, noneRecommendList);
 				});				
 			},
 			function(callback){
 				connection.query(
 					`select
 						R.main_region,
-						(select sum(RECO.reco_cnt) from RECOMMENDATION as RECO where RECO.main_region = R.main_region) as main_region_recommends
+						R.region,
+						(select sum(RECO.reco_cnt) from RECOMMENDATION as RECO where RECO.main_region = R.main_region) as main_region_recommends,
+						(select sum(RECO.reco_cnt) from RECOMMENDATION as RECO where RECO.region = R.region) as detail_region_recommends
 					from RECOMMENDATION as R
 					where
 						R.main_region != 'NULL'
 						or R.main_region != 'None'
-					group by R.main_region, main_region_recommends`,(err, rows)=>{
+					group by R.main_region, R.region, main_region_recommends`,(err, rows)=>{
 					if(err) throw err;
-					var totalMainRegionCounts=0;
-					for(var i=0; i<rows.length; i++)
-						totalMainRegionCounts += rows[i].main_region_recommends;
-
+					//var totalMainRegionCounts=0;
+					//for(var i=0; i<rows.length; i++)
+					//	totalMainRegionCounts += rows[i].main_region_recommends;
+					var mainRegionCount=0;
 					for(var i=0; i<rows.length; i++){
-						mainRegionCountsDict[rows[i].main_region]=[rows[i].main_region_recommends, Math.floor(rows[i].main_region_recommends/totalMainRegionCounts*100)];
-					}
+						for(var j=0; j<=Object.keys(mainRegionDict).length; j++){
+							if(mainRegionDict[j]['label'] == rows[i].main_region){
+								console.log(mainRegionDict[i]['label']);
+								console.log(rows[i].main_region);
+								continue;
+							}
 
+							mainRegionDict[mainRegionCount++]={
+								label: rows[i].main_region,
+								value: rows[i].main_region_recommends
+							}
+							console.log("hello?");
+							break;
+						}
+						
+						detailRegionDict[i]={
+							'main_region' : rows[i].main_region, 
+							'region'	  : rows[i].region, 
+							'detail_count': rows[i].detail_region_recommends, 
+							'detail_percent': Math.floor(rows[i].detail_region_recommends/rows[i].main_region_recommends*100)
+						};
+					}
+					console.log("1");
+					console.log(mainRegionDict);
 					callback(err, rows);
 				});
 				
 		}], function(err, ressult){
+			console.log("2");
+			console.log(mainRegionDict);
 			res.render('./pages/tables/simple.html',{
 				admin_name 			 : sess.name,
-				mainRegionCounts : mainRegionCountsDict,
+				mainRegionDict : mainRegionDict,
+				detailRegionDict : detailRegionDict,
 				noneRecommendList 	 : noneRecommendList
 			});
 		}); // end async.parallel
