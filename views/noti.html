@@ -92,13 +92,13 @@
             <li><a href="./pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
           </ul>-->
         </li>
-        <li class="treeview">
+        <li class="active treeview">
           <a href="#">
             <i class="fa fa-files-o"></i>
             <span>Notification</span>
           </a>
         </li>
-        <li class="active treeview">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-laptop"></i>
             <span>Push</span>
@@ -114,7 +114,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Push
+        Notification
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -131,81 +131,51 @@
           
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
+              <h3 class="box-title">Notification</h3>
             </div>
-                <!-- textarea -->
+
+                <div class="form-group" style="margin-left: 10px; margin-right: 10px">
+                  <label for="exampleInputEmail1">공 지 제 목</label>
+                  <input type="email" class="form-control" id="title" placeholder="제목..">
+                </div>
+
                 <div class="form-group" style="margin-left: 10px; margin-right: 10px">
                   
-                  <label>pushData(json)</label>
-                  <textarea id="pushText" class="form-control" rows="5" >
-                  {
-                      "type" : "noti",
-                      "title" : "공지사항입니다 ",
-                      "body" : "콩! 콩 콩진호가간다!"
-                  }
-                  </textarea>
+                  <label>내  용</label>
+                  <textarea id="contents" class="form-control" rows="5" placeholder="공지를 입력해주세요" ></textarea>
+
                   <br>
-                  <button id = "btnPush" type="submit" class="btn btn-info pull-right">send</button>
+                  <input type="checkbox" id="pushCheckbox"/> 모든 유저에게 푸시보내기<button id = "btnSubmit" type="submit" class="btn btn-info pull-right">submit</button>
                   <br><br>
 
                 </div>
-          
 
             <!-- /.box-header -->
-            <div class="box-body">
-              <table id="userTable" class="table table-bordered table-striped">
-                <thead>
-                <tr>      
-                  <th>check</th>
-                  <th>user_id</th>
-                  <th>login_platform</th>
-                  <th>account_hashkey</th>
-                  <th>create_datetime</th>
-                  <th>is_active</th>
-                </tr>
-                </thead>
-                <tbody>
+                <div class="box-body">
+                  <table id="notiTable" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>      
+                      <th>id</th>
+                      <th>title</th>
+                      <th>contents</th>
+                      <th>register</th>
+                      <th>cTime</th>                    
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                <% push_users.forEach(function(el,index){ %>
-                <tr>
-                  <td><input type="checkbox"/></td>                
-                  <td><%=el.user_id %></td>
-                  <td><%=el.login_platform %></td>
-                  <td><%=el.account_hashkey %></td>
-                  <td><%=el.create_datetime %></td>
-                  <td><%=el.is_active %></td>
-                </tr>  
-                <% }); %>                
-
-
+                    <% noti_data.forEach(function(el,index){ %>
+                    <tr>
+                      <td><%=index +1 %></td>
+                      <td><%=el.notice_title %></td>
+                      <td><%=el.notice_description %></td>
+                      <td><%=el.register %></td>
+                      <td><%=moment(el.create_datetime).format( 'YYYY-MMM-DD-HH:MM:ss') %></td>
+                    </tr>  
+                    <% }); %>                
                 
-              </table>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="logTable" class="table table-bordered table-striped">
-                <thead>
-                <tr>      
-                  <th>id</th>
-                  <th>pushText</th>
-                  <th>successRate</th>
-                  <th>pushTime</th>     
-
-                </tr>
-                </thead>
-                <tbody>
-
-                <% push_logs.forEach(function(el,index){ %>
-                <tr>
-                  <td><a href ='http://dev.caly.io:9091/pushDetail?objectId=<%=el._id %>'> <%=el._id %> </a></td>                  
-                  <td><%=el.pushText %></td>
-                  <td><%=el.pushSucCnt %> / <%=el.allUsers %></td>
-                  <td><%= moment(el.pushTime).format( 'MMM-DD-YYYY') %></td>
-                </tr>  
-                <% }); %>                
-              </table>
-            </div>            
-            <!-- /.box-body -->
+                  </table>
+                </div>                        
           </div>  
 
     </section>
@@ -472,78 +442,45 @@
 
 
 <script>
-        const API_SENDPUSH_URL = "http://dev.caly.io:9091/v1.0/push/send"
+        const API_SETNOTI_URL = "http://dev.caly.io:9091/v1.0/noti/setNoti"
 
-        var users = []
-        $(':checkbox').change(function() {
-            console.log('checkbox')
-            var row = this.parentNode.parentNode;
-            var cols = row.getElementsByTagName("td");
-            var userId = cols[1].childNodes[0].nodeValue
-            var loginPlatform = cols[2].childNodes[0].nodeValue
+        $( "#btnSubmit" ).click(function() {
+        // console.log($("#pushCheckbox").is(":checked"))
+          // console.log($( "#title" ).val().length)
+          // console.log($( "#contents" ).val().length)
+          if ($( "#title" ).val().length > 0 && $( "#contents" ).val().length > 0){
+              var hasPush = false
+              if($("#pushCheckbox").is(":checked") == true){                    
+                hasPush = true;
+              }            
 
-            // console.log('checked user => ' +cols[1].childNodes[0].nodeValue)
-            // console.log('checked loginPlatform => ' +cols[2].childNodes[0].nodeValue)
-            var userDic = {}
-            if (this.checked){
-
-                userDic['userId'] = userId
-                userDic['loginPlatform'] = loginPlatform
-                users.push(userDic)
-            }else{
-                for(var i=0; i<users.length; i++){
-                  //검색해보니까 같은애가 있다 그럼 해당 array 제거
-                  if (users[i]['userId'] == userId && users[i]['loginPlatform'] == loginPlatform ){
-                    //해당 인덱스 는 i 이다.
-                      var index = i
-                      if (index != -1) {
-                          users.splice(index, 1);
-                      }                     
-                  }
-                }
-            }    
-
-        }); 
-
-        $( "#btnPush" ).click(function() {
-          if (users.length !=0){
-              var stringUsers  = '';
-              for (i = 0; i < users.length; i++) { 
-                  stringUsers += users[i]['userId']+" ("+users[i]['loginPlatform'] + ")\n"
-              }
-              var answer = confirm ("아래유저들에게 푸시를 보냅니다. \n"+stringUsers)
+              var answer = confirm ("아래와같이 공지를 하시겠습니까? \n"+"공지제목: "+ $( "#title" ).val() +"\n 공지내용: "+$( "#contents" ).val()+ "[푸시옵션]=>"+hasPush)
               if (answer){
                   console.log('yes');
-                  pushText = $("#pushText").val()
-                  pushText = pushText.replace('{','');
-                  pushText = pushText.replace('}','');
 
 
-                  $.post( API_SENDPUSH_URL, { users: JSON.stringify(users),pushText: pushText })
+                  $.post( API_SETNOTI_URL, { title: $( "#title" ).val(),contents: $( "#contents" ).val(),hasPush: hasPush})
                   .done(function( data ) {
-                    confirm('응답:' + JSON.stringify(data) )
+                    var answer = confirm('응답:' + JSON.stringify(data) )
                     if(answer){
                       location.reload(true);
-                      $('input[type=checkbox]').removeAttr('checked');
                     }
-                    
 
                   });
-                  users = [];
-                  //서버로 전송
+
               }
               else{
                 console.log('nope');
               }
                   
           }else{
-              var answer = confirm ("최소 1명이상의 유저를 선택해주세요\n")
+              var answer = confirm ("제목 혹은 콘텐츠가 비어있어요..\n")
           }
           
 
         });
 
-        $("#userTable").DataTable();
+        $("#notiTable").DataTable();
   
 </script>
 </body>

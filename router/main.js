@@ -5,6 +5,7 @@ var connection = mysql.createConnection(dbconfig);
 
 
 var pushCtrl = require(__dirname+'/../controller/pushCtrl.js');
+var notiCtrl = require(__dirname+'/../controller/notiCtrl.js');
 
 
 module.exports = function(app)
@@ -682,6 +683,9 @@ module.exports = function(app)
     //dev.caly.io:555566/push 
     app.route('/push').get(pushCtrl.initData)
     app.route('/pushDetail').get(pushCtrl.pushDetail)
+
+    app.route('/notification').get(notiCtrl.initData)
+    app.route('/v1.0/noti/setNoti').post(notiCtrl.setNoti)
     
     app.route('/v1.0/push/send').post(pushCtrl.sendPush)
 
