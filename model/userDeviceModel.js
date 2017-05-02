@@ -17,7 +17,7 @@ exports.getPushToken  = (users) => {
         additionalUsers = additionalUsers.substring(0, additionalUsers.length - 3);
         console.log(additionalUsers)
         connection.query(
-            `SELECT push_token FROM USERDEVICE
+            `SELECT push_token,user_id,login_platform FROM USERDEVICE
             INNER JOIN USERACCOUNT
             ON USERACCOUNT.account_hashkey = USERDEVICE.account_hashkey
             WHERE USERACCOUNT.is_active IS NOT NULL 

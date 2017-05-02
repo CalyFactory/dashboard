@@ -2,11 +2,11 @@ var keyconfig = require(__dirname+'/../config/key.json');
 var request = require('request');
 
 
-exports.send = (pushTokens,pushText) =>{
-	console.log(pushTokens)
+exports.send = (pushToken,pushText) =>{
+	console.log(pushToken)
 	console.log(pushText)
 	let pushtoken_data = {
-		'registration_ids':pushTokens,
+		'to':pushToken,
 		'data':{pushText}
 	};
 	console.log(pushtoken_data)
@@ -27,6 +27,7 @@ exports.send = (pushTokens,pushText) =>{
 			}
 			resolve(body);	
 			console.log('Upload successful!  Server responded with:', body);
+
 		})	
 	})
 }

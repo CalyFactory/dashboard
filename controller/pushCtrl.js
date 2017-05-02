@@ -1,21 +1,19 @@
 const userAccountModel = require(__dirname+'/../model/userAccountModel.js');
 const userDeviceModel = require(__dirname+'/../model/userDeviceModel.js');
 const fcm = require(__dirname+'/../common/fcm.js');
+const pushLogModel = require(__dirname+'/../model/pushLogModel.js');
+var util = require(__dirname+'/../common/util.js');
 
 
 exports.initData = async (req, res, next) => {
 	
 	console.log('[pushCtrl]pushCtrl init Data')
 	const sess = req.session;
-
+	
 	try{
 		let result = '';
 
 		push_users = await userAccountModel.getPushUsers();			
-		// return res.json({
-		//   	"status":true,
-		//   	"message":push_users
-	 // 	})
 
 	}catch(err){	
 		console.log(err)	
@@ -39,8 +37,8 @@ exports.sendPush = async (req, res, next) => {
 	const pushText = req.body.pushText;
 	//login platform 확인해야함.
 	
-	console.log(users)
-	console.log(pushText)
+	console.log('[pushCtrl]=>',users)
+	console.log('[pushCtrl]=>',pushText)
 	pushText.replace(/[\r\n]/g, '');
 
 
@@ -48,12 +46,28 @@ exports.sendPush = async (req, res, next) => {
 		let result = '';
 		rows = await userDeviceModel.getPushToken(JSON.parse(users));			
 		console.log(rows)
-		arrPush = new Array()
+
+		var usersArray = []
 		for (var i = 0; i<rows.length;i++){
-			arrPush.push(rows[i].push_token)	
+			pushResult = await fcm.send(rows[i].push_token,pushText)
+			var userLog = {}
+			userLog.userId = rows[i].user_id
+			userLog.loginPlatform = rows[i].login_platform
+			userLog.success = pushResult.success
+			usersArray.push(userLog)
 		}
-		
-		pushResult = await fcm.send(arrPush,pushText)
+				
+
+
+		var pushLog = new pushLogModel({
+			pushText:pushText,
+			pushTime:util.getCurrentDateTime(),
+			users:usersArray
+		});
+
+	    pushLog.save().then(function (doc) {
+	    	console.log('[pushCtrl]=>',doc)
+	    });		
 
 		return res.json({
 		  	"status":true,
