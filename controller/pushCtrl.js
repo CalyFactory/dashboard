@@ -5,10 +5,27 @@ const pushLogModel = require(__dirname+'/../model/pushLogModel.js');
 var util = require(__dirname+'/../common/util.js');
 
 
+var mongo = require(__dirname+'/../common/mongo.js');
+
+
 exports.initData = async (req, res, next) => {
 	
 	console.log('[pushCtrl]pushCtrl init Data')
 	const sess = req.session;
+
+	
+	pushLogModel.find({} , function (err, data) {
+	  if (err) return handleError(err);
+	  
+	  console.log(data)
+	})
+
+
+
+
+
+
+
 	
 	try{
 		let result = '';

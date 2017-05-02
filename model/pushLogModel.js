@@ -1,5 +1,3 @@
-
-
 var mongo = require(__dirname+'/../common/mongo.js');
 var Schema = mongo._.Schema
 
@@ -9,7 +7,7 @@ var usersSchema = new Schema(
     loginPlatform: String,
     success: Number
 	}
-) 
+);
 var pushSchema = new Schema(
 	{
 		pushText: String,
@@ -18,4 +16,4 @@ var pushSchema = new Schema(
 
 	}
 );
-module.exports = mongo._.model('admin_puhLog',pushSchema);
+module.exports = mongo._.model('admin_pushlogs',pushSchema);

@@ -4,12 +4,12 @@ var request = require('request');
 
 exports.send = (pushToken,pushText) =>{
 	console.log(pushToken)
-	console.log(pushText)
-	let pushtoken_data = {
-		'to':pushToken,
-		'data':{pushText}
-	};
-	console.log(pushtoken_data)
+	console.log('pushText=>'+JSON.stringify(pushText))
+	var pushData = {}
+
+	pushData.to = pushToken
+	pushData.data = JSON.parse("{"+pushText+"}")
+	console.log(pushData)
     return new Promise((resolve, reject) => {              
 		request({
 			method	: 'POST',
@@ -19,7 +19,7 @@ exports.send = (pushToken,pushText) =>{
 				'Content-Type':'application/json',
 				'Authorization':'key='+keyconfig.key
 			},
-			body 	: pushtoken_data,
+			body 	: pushData,
 			json 	: true
 		},function (error, response, body) {
 		    if (error) {
@@ -31,3 +31,4 @@ exports.send = (pushToken,pushText) =>{
 		})	
 	})
 }
+
