@@ -12,6 +12,8 @@ var pushSchema = new Schema(
 	{
 		pushText: String,
 		pushTime: Date,
+		pushSucCnt: Number,
+		allUsers:Number,
 		users:[usersSchema]
 
 	}

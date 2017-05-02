@@ -681,6 +681,8 @@ module.exports = function(app)
     });
     //dev.caly.io:555566/push 
     app.route('/push').get(pushCtrl.initData)
+    app.route('/pushDetail').get(pushCtrl.pushDetail)
+    
     app.route('/v1.0/push/send').post(pushCtrl.sendPush)
 
 }

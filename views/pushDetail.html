@@ -114,7 +114,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Push
+        PushDetailInfo
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -131,78 +131,32 @@
           
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
+              <h3 class="box-title">object ID :  <%= push_detail_data[0]._id %></h3>
             </div>
-                <!-- textarea -->
-                <div class="form-group" style="margin-left: 10px; margin-right: 10px">
-                  
-                  <label>pushData(json)</label>
-                  <textarea id="pushText" class="form-control" rows="5" >
-                  {
-                      "type" : "noti",
-                      "title" : "공지사항입니다 ",
-                      "body" : "콩! 콩 콩진호가간다!"
-                  }
-                  </textarea>
-                  <br>
-                  <button id = "btnPush" type="submit" class="btn btn-info pull-right">send</button>
-                  <br><br>
 
-                </div>
-          
-
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="userTable" class="table table-bordered table-striped">
-                <thead>
-                <tr>      
-                  <th>check</th>
-                  <th>user_id</th>
-                  <th>login_platform</th>
-                  <th>account_hashkey</th>
-                  <th>create_datetime</th>
-                  <th>is_active</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <% push_users.forEach(function(el,index){ %>
-                <tr>
-                  <td><input type="checkbox"/></td>                
-                  <td><%=el.user_id %></td>
-                  <td><%=el.login_platform %></td>
-                  <td><%=el.account_hashkey %></td>
-                  <td><%=el.create_datetime %></td>
-                  <td><%=el.is_active %></td>
-                </tr>  
-                <% }); %>                
-
-
-                
-              </table>
-            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="logTable" class="table table-bordered table-striped">
                 <thead>
                 <tr>      
-                  <th>id</th>
-                  <th>pushText</th>
-                  <th>successRate</th>
-                  <th>pushTime</th>     
-
+                  <th>userId</th>
+                  <th>loginPlatform</th>
+                  <th>success</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <% push_logs.forEach(function(el,index){ %>
+
+                <% push_detail_data[0].users.forEach(function(el,index){ %>
                 <tr>
-                  <td><a href ='http://dev.caly.io:9091/pushDetail?objectId=<%=el._id %>'> <%=el._id %> </a></td>                  
-                  <td><%=el.pushText %></td>
-                  <td><%=el.pushSucCnt %> / <%=el.allUsers %></td>
-                  <td><%= moment(el.pushTime).format( 'MMM-DD-YYYY') %></td>
+                  <td><%=el.userId %></td>                  
+                  <td><%=el.loginPlatform %></td>
+                  <td><%=el.success %></td>                  
                 </tr>  
-                <% }); %>                
+                <% }); %>           
+
+
+                
               </table>
             </div>            
             <!-- /.box-body -->
