@@ -87,7 +87,8 @@ exports.sendPush = async (req, res, next) => {
 		var usersArray = []
 		var successCnt = 0 ;
 		for (var i = 0; i<rows.length;i++){
-			pushResult = await fcm.send(rows[i].push_token,pushText)
+			
+			pushResult = await fcm.send(rows[i].push_token,JSON.parse("{"+pushText+"}"))
 			var userLog = {}
 			userLog.userId = rows[i].user_id
 			userLog.loginPlatform = rows[i].login_platform

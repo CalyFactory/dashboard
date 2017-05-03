@@ -7,6 +7,22 @@ var connection = mysql.createConnection(dbconfig);
  * Post retrieve
  * @param team_idx
  */
+exports.getAllUsers  = (users) => {
+    return new Promise((resolve, reject) => {                    
+        connection.query(
+            `SELECT USERDEVICE.push_token, USERACCOUNT.user_id, USERACCOUNT.login_platform FROM USERACCOUNT 
+INNER JOIN USERDEVICE on USERDEVICE.account_hashkey = USERACCOUNT.account_hashkey
+WHERE USERACCOUNT.is_active is not null and USERDEVICE.receive_push = 1`
+        , (err, rows) => {
+            if (err) {
+            reject(err);
+            } else {
+            resolve(rows);
+            }
+        });
+    });  
+}
+
 exports.getPushToken  = (users) => {
     return new Promise((resolve, reject) => {            
         console.log('users' ,users)  
@@ -31,3 +47,4 @@ exports.getPushToken  = (users) => {
         });
     });  
 }
+

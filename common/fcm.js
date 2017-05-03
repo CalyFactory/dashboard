@@ -3,13 +3,13 @@ var request = require('request');
 
 
 exports.send = (pushToken,pushText) =>{
-	console.log(pushToken)
+	console.log('token =>' + pushToken)
 	console.log('pushText=>'+JSON.stringify(pushText))
 	var pushData = {}
 
 	pushData.to = pushToken
-	pushData.data = JSON.parse("{"+pushText+"}")
-	console.log(pushData)
+	pushData.data = pushText
+
     return new Promise((resolve, reject) => {              
 		request({
 			method	: 'POST',
