@@ -30,9 +30,6 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
-
-  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
-
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -44,12 +41,6 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  
-  <style>        
-    #userTable tr.selected{background-color: navy;color: #fff; font-weight: bold;}
-  </style>
-
-
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -75,7 +66,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="treeview">
+        <li class="active treeview">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -98,7 +89,7 @@
             <span>Notification</span>
           </a>
         </li>
-        <li class="active treeview">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-laptop"></i>
             <span>Push</span>
@@ -114,99 +105,166 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Push
+        Dashboard
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active">Analysis</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
+      <div class="box box-primary">
+        <div class="box-header">
+          <br>        
+          <h3 class="box-title">로그 분석창</h3>
 
+          <div class="box-body">
+          <br><br>
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                    <h3>13</h3>
 
-
-          
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
-            </div>
-                <!-- textarea -->
-                <div class="form-group" style="margin-left: 10px; margin-right: 10px">
-                  
-                  <label>pushData(json)</label>
-                  <textarea id="pushText" class="form-control" rows="5" >
-                  {
-                      "type" : "noti",
-                      "title" : "공지사항입니다 ",
-                      "body" : "콩! 콩 콩진호가간다!"
-                  }
-                  </textarea>
-                  <br>
-                  <button id = "btnPush" type="submit" class="btn btn-info pull-right">send</button>
-                  <br><br>
-
+                    <p>총 가입자 수</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
                 </div>
-          
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                  <div class="inner">
+                    <h3>13</h3>
 
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="userTable" class="table table-bordered table-striped">
-                <thead>
-                <tr>      
-                  <th>check</th>
-                  <th>user_id</th>
-                  <th>login_platform</th>
-                  <th>account_hashkey</th>
-                  <th>create_datetime</th>
-                  <th>is_active</th>
-                </tr>
-                </thead>
-                <tbody>
+                    <p>어제 가입자 수</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                    
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                  <div class="inner">
+                    <h3>13<sup style="font-size: 20px">min</sup>24<sup style="font-size: 20px">sec</sup></h3>
 
-                <% push_users.forEach(function(el,index){ %>
-                <tr>
-                  <td><input type="checkbox"/></td>                
-                  <td><%=el.user_id %></td>
-                  <td><%=el.login_platform %></td>
-                  <td><%=el.account_hashkey %></td>
-                  <td><%=el.create_datetime %></td>
-                  <td><%=el.is_active %></td>
-                </tr>  
-                <% }); %>                
+                    <p style="font-size: 16px">평균매핑 대응시간</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                  <div class="inner">
+                    <h3>65</h3>
 
+                    <p>기타</p>
 
-                
-              </table>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
+                </div>
+              </div>
+              <!-- ./col -->
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="logTable" class="table table-bordered table-striped">
-                <thead>
-                <tr>      
-                  <th>id</th>
-                  <th>pushText</th>
-                  <th>successRate</th>
-                  <th>pushTime</th>     
 
-                </tr>
-                </thead>
-                <tbody>
+            <div class="row">
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                    <h3>13</h3>
 
-                <% push_logs.forEach(function(el,index){ %>
-                <tr>
-                  <td><a href ='http://dev.caly.io:9091/pushDetail?objectId=<%=el._id %>'> <%=el._id %> </a></td>                  
-                  <td><%=el.pushText %></td>
-                  <td><%=el.pushSucCnt %> / <%=el.allUsers %></td>
-                  <td><%= moment(el.pushTime).format( 'MMM-DD-YYYY') %></td>
-                </tr>  
-                <% }); %>                
-              </table>
-            </div>            
-            <!-- /.box-body -->
-          </div>  
+                    <p>총 가입자 수</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                  <div class="inner">
+                    <h3>13</h3>
+
+                    <p>어제 가입자 수</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                    
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                  <div class="inner">
+                    <h3>13<sup style="font-size: 20px">min</sup>24<sup style="font-size: 20px">sec</sup></h3>
+
+                    <p style="font-size: 16px">평균매핑 대응시간</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                  <div class="inner">
+                    <h3>65</h3>
+
+                    <p>기타</p>
+
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                  </div>
+                  <!--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>-->
+                </div>
+              </div>
+              <!-- ./col -->
+            </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+      <!-- /.row -->
+
+      <!-- Main row -->
+      
+      <!-- /.row (main row) -->
 
     </section>
     <!-- /.content -->
@@ -414,7 +472,6 @@
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-<!-- ./wrapper -->
 
 
 <!-- jQuery 2.2.3 -->
@@ -422,9 +479,7 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>
+
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
@@ -454,99 +509,5 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-
-
-
-<!-- for dataTable -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-
-
-
-<script>
-        const API_SENDPUSH_URL = "http://dev.caly.io:9091/v1.0/push/send"
-
-        var users = []
-        $(':checkbox').change(function() {
-            console.log('checkbox')
-            var row = this.parentNode.parentNode;
-            var cols = row.getElementsByTagName("td");
-            var userId = cols[1].childNodes[0].nodeValue
-            var loginPlatform = cols[2].childNodes[0].nodeValue
-
-            // console.log('checked user => ' +cols[1].childNodes[0].nodeValue)
-            // console.log('checked loginPlatform => ' +cols[2].childNodes[0].nodeValue)
-            var userDic = {}
-            if (this.checked){
-
-                userDic['userId'] = userId
-                userDic['loginPlatform'] = loginPlatform
-                users.push(userDic)
-            }else{
-                for(var i=0; i<users.length; i++){
-                  //검색해보니까 같은애가 있다 그럼 해당 array 제거
-                  if (users[i]['userId'] == userId && users[i]['loginPlatform'] == loginPlatform ){
-                    //해당 인덱스 는 i 이다.
-                      var index = i
-                      if (index != -1) {
-                          users.splice(index, 1);
-                      }                     
-                  }
-                }
-            }    
-
-        }); 
-
-        $( "#btnPush" ).click(function() {
-          if (users.length !=0){
-              var stringUsers  = '';
-              for (i = 0; i < users.length; i++) { 
-                  stringUsers += users[i]['userId']+" ("+users[i]['loginPlatform'] + ")\n"
-              }
-              var answer = confirm ("아래유저들에게 푸시를 보냅니다. \n"+stringUsers)
-              if (answer){
-                  console.log('yes');
-                  pushText = $("#pushText").val()
-                  //codeReview
-                  //중괄호를 막없애면 다른 타입이 생길때 어ㄷ쩔거냐
-                  pushText = pushText.replace('{','');
-                  pushText = pushText.replace('}','');
-
-
-                  $.post( API_SENDPUSH_URL, { users: JSON.stringify(users),pushText: pushText })
-                  .done(function( data ) {
-                    confirm('응답:' + JSON.stringify(data) )
-                    if(answer){
-                      location.reload(true);
-                      $('input[type=checkbox]').removeAttr('checked');
-                    }
-                    
-
-                  });
-                  users = [];
-                  //서버로 전송
-              }
-              else{
-                console.log('nope');
-              }
-                  
-          }else{
-              var answer = confirm ("최소 1명이상의 유저를 선택해주세요\n")
-          }
-          
-
-        });
-
-        $("#userTable").DataTable();
-  
-</script>
 </body>
 </html>

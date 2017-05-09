@@ -112,7 +112,8 @@ exports.sendPush = async (req, res, next) => {
 	    pushLog.save().then(function (doc) {
 	    	console.log('[pushCtrl]=>',doc)
 	    });		
-
+	    //codeReview
+	    //곧 생김 이라는 status code가 있다. 고걸 넘겨줘보자.
 		return res.json({
 		  	"status":true,
 		  	"message": pushResult

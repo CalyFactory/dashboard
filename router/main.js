@@ -6,6 +6,7 @@ var connection = mysql.createConnection(dbconfig);
 
 var pushCtrl = require(__dirname+'/../controller/pushCtrl.js');
 var notiCtrl = require(__dirname+'/../controller/notiCtrl.js');
+var analysisCtrl = require(__dirname+'/../controller/analysisCtrl.js');
 
 
 module.exports = function(app)
@@ -688,5 +689,7 @@ module.exports = function(app)
     app.route('/v1.0/noti/setNoti').post(notiCtrl.setNoti)
     
     app.route('/v1.0/push/send').post(pushCtrl.sendPush)
+
+    app.route('/analysis').get(analysisCtrl.initData)
 
 }
