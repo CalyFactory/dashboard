@@ -7,13 +7,11 @@ var connection = mysql.createConnection(dbconfig);
  * Post retrieve
  * @param team_idx
  */
-exports.getPushUsers  = () => {
+exports.getUserAccount  = (adminName) => {
     return new Promise((resolve, reject) => {              
         connection.query(
-          `SELECT user_id,account_hashkey,date_format(create_datetime, '%b %d %Y %h:%i %p') as create_datetime,login_platform,is_active 
-          FROM USERACCOUNT
-          WHERE is_active is not null`
-          ,(err, rows) => {
+          `SELECT account_hashkey FROM ADMINACCOUNT WHERE admin_name = ?`
+          ,adminName,(err, rows) => {
           if (err) {
             reject(err);
           } else {

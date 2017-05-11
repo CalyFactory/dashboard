@@ -2,14 +2,14 @@ var keyconfig = require(__dirname+'/../config/key.json');
 var request = require('request');
 
 
-exports.send = (pushTokens,pushText) =>{
-	console.log(pushTokens)
-	console.log(pushText)
-	let pushtoken_data = {
-		'registration_ids':pushTokens,
-		'data':{pushText}
-	};
-	console.log(pushtoken_data)
+exports.send = (pushToken,pushText) =>{
+	console.log('token =>' + pushToken)
+	console.log('pushText=>'+JSON.stringify(pushText))
+	var pushData = {}
+
+	pushData.to = pushToken
+	pushData.data = pushText
+
     return new Promise((resolve, reject) => {              
 		request({
 			method	: 'POST',
@@ -19,7 +19,7 @@ exports.send = (pushTokens,pushText) =>{
 				'Content-Type':'application/json',
 				'Authorization':'key='+keyconfig.key
 			},
-			body 	: pushtoken_data,
+			body 	: pushData,
 			json 	: true
 		},function (error, response, body) {
 		    if (error) {
@@ -27,6 +27,8 @@ exports.send = (pushTokens,pushText) =>{
 			}
 			resolve(body);	
 			console.log('Upload successful!  Server responded with:', body);
+
 		})	
 	})
 }
+
