@@ -13,10 +13,8 @@ module.exports = function(app)
 {
 	app.get('/dashboard',(req,result)=>{
 		sess = req.session;
-		if(!sess.name){
+		if(!sess.name)
 			result.redirect('/');
-			return;
-		}
 
 		var totalRegister 		= 0;
 		var yesterdayRegister 	= 0;
@@ -692,7 +690,7 @@ module.exports = function(app)
 				});
 				
 		}], function(err, ressult){
-			res.render('./pages/tables/simple.html',{
+			res.render('simple.html',{
 				admin_name 			 : sess.name,
 				mainRegionDict : mainRegionDict,
 				detailRegionDict : detailRegionDict,
@@ -709,7 +707,7 @@ module.exports = function(app)
 			return;
 		}
 
-		res.render('./pages/charts/chartjs.html',{
+		res.render('chartjs.html',{
 			admin_name : sess.name
 		});
 	});
@@ -720,7 +718,7 @@ module.exports = function(app)
 		if(sess.name)
 			res.redirect('/dashboard');
 		else
-			res.render('./pages/examples/login.html',{error:null});
+			res.render('login.html',{error:null});
 	});
 	app.post('/login',(req,res)=>{
 		sess = req.session;
@@ -731,58 +729,11 @@ module.exports = function(app)
 				res.redirect('/dashboard');
 			}
 			else{
-				res.render('./pages/examples/login.html',{error: "Input wrong id or password"});
+				res.render('login.html',{error: "Input wrong id or password"});
 			}
 		});
 	});
 
-	// PUSH example in web-mapping-admin
-	app.post('/push',(req,res)=>{
-/* 
-	// PUSH ALL-DEVICE ABOUT EACH ACCOUNT-USER
-
-	connection.query(
-		`select 
-			UD.push_token
-		from USERDEVICE as UD
-		inner join USERACCOUNT as UA
-			on UD.account_hashkey = UA.account_hashkey
-		where
-			UA.account_hashkey = \'`+req.body.account_hashkey+'\''
-		, (err, pushtokens) => {
-			
-			let pushtoken_length=pushtokens.length;
-			for(let i=0; i<pushtoken_length; i++)
-			{
-				let pushtoken_data={
-					'to':pushtokens[i].push_token,
-					'data':{
-						"type":"reco",
-						"action":""
-					}
-				};
-
-				request({
-					method	: 'POST',
-					uri 	: 'https://fcm.googleapis.com/fcm/send',
-					headers	:
-					{
-						'Content-Type':'application/json',
-						'Authorization':'key='+keyconfig.key
-					},
-					body 	: pushtoken_data,
-					json 	: true
-				}).then((data) => {
-				}).catch((err) => {
-					console.log(err);
-					throw err;
-
-					console.log("Complete push to device");
-				})
-			}
-	});
-*/
-	});
 	app.get('/logout',(req,res)=>{
 		sess = req.session;
 
@@ -798,7 +749,7 @@ module.exports = function(app)
 			res.redirect('/');
 		}
 	});
-    });
+
     //dev.caly.io:555566/push 
     app.route('/push').get(pushCtrl.initData)
     app.route('/pushDetail').get(pushCtrl.pushDetail)
