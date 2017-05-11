@@ -58,9 +58,9 @@
           </a>
         </li>
         <li class="active treeview">
-          <a href="/analysis">
+          <a href="/reco-analysis">
             <i class="fa fa-pie-chart"></i>
-            <span>Analysis</span>
+            <span>Reco Analysis</span>
           </a>
           <!--<ul class="treeview-menu">
             <li><a href="./pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
@@ -68,6 +68,12 @@
             <li><a href="./pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
             <li><a href="./pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
           </ul>-->
+        </li>
+        <li class="treeview">
+          <a href="/user-analysis">
+            <i class="fa fa-pie-chart"></i>
+            <span>User Analysis</span>
+          </a>
         </li>
         <li class="treeview">
           <a href="#">
@@ -135,7 +141,7 @@
                   <tr>
                     <td><%= i+1 %></td>
                     <td><%= noneRecommendList[i].user_gender==1? '남':'여' %></td>
-                    <td><%= noneRecommendList[i].user_birth %></td>
+                    <td><%= noneRecommendList[i].age %></td>
                     <td><%= noneRecommendList[i].summary %></td>
                     <td><%= noneRecommendList[i].location %></td>
                     <td><%= noneRecommendList[i].converted_start_dt %> ~ <%= noneRecommendList[i].converted_end_dt %></td>

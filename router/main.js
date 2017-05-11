@@ -7,8 +7,10 @@ module.exports = function(app)
 {
 	app.get('/dashboard',(req,result)=>{
 		sess = req.session;
-		if(!sess.name)
+		if(!sess.name){
 			result.redirect('/');
+			return;
+		}
 
 		var totalRegister 		= 0;
 		var yesterdayRegister 	= 0;
@@ -588,8 +590,12 @@ module.exports = function(app)
 		});	
 	});
 
-	app.get('/analysis',(req,res)=>{
+	app.get('/reco-analysis',(req,res)=>{
 		sess = req.session;
+		if(!sess.name){
+			result.redirect('/');
+			return;
+		}
 
 		var mainRegionDict=[];
 		var detailRegionDict={};
@@ -625,6 +631,11 @@ module.exports = function(app)
 					var length = rows.length;
 					//console.log(new Date(rows[i].start_dt).format(""))
 					for(var i=0; i<length; i++){
+						var age='알수 없음';
+						var gap=new Date().getFullYear() - parseInt(noneRecommendList[i].user_birth);
+						if(gap > 0 && gap < 100)
+							age=gap;
+
 						var sDate = new Date(rows[i].start_dt);
 						noneRecommendList[i].converted_start_dt = sDate.getFullYear().toString().substring(2,4)+DisplayDT(sDate.getMonth()+1)+DisplayDT(sDate.getDate())+' '+DisplayDT(sDate.getHours())+':'+DisplayDT(sDate.getMinutes());//+':'+DisplayDT(sDate.getSeconds());
 						//console.log(sDate.getFullYear()+'/'+(sDate.getMonth()+1)+'/'+sDate.getDate()+' '+sDate.getHours()+':'+sDate.getMinutes()+':'+sDate.getSeconds());
@@ -632,6 +643,7 @@ module.exports = function(app)
 						var eDate = new Date(rows[i].end_dt);
 						var eDateTime = (eDate.getFullYear().toString().substring(2,4)+DisplayDT(eDate.getMonth()+1)+DisplayDT(eDate.getDate())) == (sDate.getFullYear().toString().substring(2,4)+DisplayDT(sDate.getMonth()+1)+DisplayDT(sDate.getDate())) ? '': eDate.getFullYear().toString().substring(2,4)+DisplayDT(eDate.getMonth()+1)+DisplayDT(eDate.getDate());
 						noneRecommendList[i].converted_end_dt = eDateTime+' '+DisplayDT(eDate.getHours())+':'+DisplayDT(eDate.getMinutes());//+':'+DisplayDT(eDate.getSeconds());
+						noneRecommendList[i].age = age;
 					}
 					callback(err, noneRecommendList);
 				});				
@@ -682,6 +694,18 @@ module.exports = function(app)
 			});
 		}); // end async.parallel
 
+	});
+
+	app.get('/user-analysis',(req,res)=>{
+		sess = req.session;
+		if(!sess.name){
+			res.redirect('/');
+			return;
+		}
+
+		res.render('./pages/charts/chartjs.html',{
+			admin_name : sess.name
+		});
 	});
 
 	app.get('/',(req,res)=>{
@@ -768,7 +792,4 @@ module.exports = function(app)
 			res.redirect('/');
 		}
 	});
-	app.get('/pages/charts/chartjs.html',function(req,res){
-		res.render('pages/charts/chartjs.html');
-    });
 }
