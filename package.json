@@ -17,6 +17,7 @@
     "moment": "^2.18.1",
     "mongoose": "^4.9.6",
     "moongoose": "0.0.5",
-    "mysql": "^2.11.1"
+    "mysql": "^2.11.1",
+    "request": "^2.81.0"
   }
 }

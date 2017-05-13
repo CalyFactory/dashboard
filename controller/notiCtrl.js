@@ -5,7 +5,6 @@ const fcm = require(__dirname+'/../common/fcm.js');
 const pushLogModel = require(__dirname+'/../model/pushLogModel.js');
 var util = require(__dirname+'/../common/util.js');
 
-var util = require(__dirname+'/../common/util.js');
 var moment = require('moment');
 
 
