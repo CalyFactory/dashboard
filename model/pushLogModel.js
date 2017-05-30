@@ -16,6 +16,6 @@ var pushSchema = new Schema(
 		allUsers:Number,
 		users:[usersSchema]
 
-	}
+	},{collection:'admin_pushlogs'}
 );
-module.exports = mongo._.model('admin_pushlogs',pushSchema);
+module.exports = mongo._.model('admin_pushlog',pushSchema);

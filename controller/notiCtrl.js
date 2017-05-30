@@ -76,10 +76,7 @@ exports.setNoti =  async (req, res, next) => {
 				}
 				usersArray.push(userLog)					
 			}
-			// console.log(pushText)
-			// console.log(successCnt)
-			// console.log(users.length)
-			// console.log(usersArray)
+
 			var pushLog = new pushLogModel({
 				pushText:JSON.stringify(pushText),
 				pushTime:util.getCurrentDateTime(),
